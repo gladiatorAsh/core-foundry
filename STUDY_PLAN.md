@@ -21,6 +21,18 @@ coding gets the most hours early on.
 | 9 | Behavioral + AI-assisted coding | Finish all 10 stories; map them to the [question bank](06-behavioral/question-bank.md) and [Amazon LPs](06-behavioral/amazon-leadership-principles.md). Two [AI-assisted coding](00-strategy/ai-assisted-coding.md) drills. Behavioral mock. |
 | 10 | Company-specific + polish | Company-tagged LeetCode for your target company (last 6 months). Re-do the hardest case studies. One full mock loop (4 rounds in a day). Rest the day before. |
 
+## Full-stack track (swap these weeks in when targeting full-stack roles)
+
+Weeks 1–5 (coding + system design) and 9–10 (behavioral, mocks) stay the same. Replace weeks 6–8:
+
+| Week | Focus | Do |
+|---|---|---|
+| 6 | JavaScript, TypeScript, React | [javascript-and-typescript](07-full-stack/javascript-and-typescript.md), [react-and-frameworks](07-full-stack/react-and-frameworks.md), [angular-redux-d3](07-full-stack/stack/angular-redux-d3.md). Write every utility in [practical-coding](07-full-stack/practical-coding.md) from memory; run `node --test tests/js/practical.test.mjs`. Build an autocomplete component in a sandbox. |
+| 7 | Browser, performance, frontend design | [browser-performance-accessibility](07-full-stack/browser-performance-accessibility.md), [html-css](07-full-stack/stack/html-css.md), [frontend-system-design](07-full-stack/frontend-system-design.md): rehearse case studies 1–3 out loud. Frontend design mock. |
+| 8 | Backend, data, cloud | [backend-and-apis](07-full-stack/backend-and-apis.md), [databases-and-sql](07-full-stack/databases-and-sql.md), [web-security](07-full-stack/web-security.md), [nodejs](07-full-stack/stack/nodejs.md), [csharp-dotnet](07-full-stack/stack/csharp-dotnet.md), [python](07-full-stack/stack/python.md), [data-stores](07-full-stack/stack/data-stores.md), [azure](07-full-stack/stack/azure.md) / [aws](07-full-stack/stack/aws.md), [devops](07-full-stack/devops-and-cloud.md). Write 10 SQL queries by hand (joins, windows, CTEs). |
+
+Daily quiz for this track: `python tools/quiz.py --topic full-stack --topic coding --topic system-design --due`.
+
 ## Compressed 4-week version
 
 Week 1: coding patterns 1–8 (40 *must* problems). Week 2: system design + GenAI design. Week 3: ML design, fundamentals,

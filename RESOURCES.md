@@ -45,6 +45,15 @@ All GitHub repos below were checked to exist in October 2026. ★ marks the one 
 - [Annotated paper implementations (GitHub, labmlai)](https://github.com/labmlai/annotated_deep_learning_paper_implementations)
 - [Hugging Face transformers (GitHub)](https://github.com/huggingface/transformers) · [Hugging Face LLM course](https://huggingface.co/learn)
 
+## Full-stack
+- ★ [front-end-interview-handbook (GitHub, yangshun)](https://github.com/yangshun/front-end-interview-handbook) · [GreatFrontEnd](https://www.greatfrontend.com/)
+- [top-javascript-interview-questions (GitHub)](https://github.com/greatfrontend/top-javascript-interview-questions) · [top-reactjs-interview-questions (GitHub)](https://github.com/greatfrontend/top-reactjs-interview-questions)
+- [javascript-interview-questions (GitHub, sudheerj)](https://github.com/sudheerj/javascript-interview-questions) · [reactjs-interview-questions (GitHub, sudheerj)](https://github.com/sudheerj/reactjs-interview-questions)
+- [You Don't Know JS (GitHub)](https://github.com/getify/You-Dont-Know-JS) · [nodebestpractices (GitHub)](https://github.com/goldbergyoni/nodebestpractices) · [developer-roadmap (GitHub)](https://github.com/kamranahmedse/developer-roadmap)
+- [react.dev](https://react.dev/learn) · [MDN](https://developer.mozilla.org/) · [web.dev](https://web.dev/) · [Angular docs](https://angular.dev/) · [D3 docs](https://d3js.org/)
+- [ASP.NET Core docs](https://learn.microsoft.com/aspnet/core/) · [EF Core docs](https://learn.microsoft.com/ef/core/) · [aspnetcore (GitHub)](https://github.com/dotnet/aspnetcore) · [FastAPI docs](https://fastapi.tiangolo.com/)
+- [OWASP Top 10](https://owasp.org/Top10/) · [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/) · [Use The Index, Luke (SQL indexing)](https://use-the-index-luke.com/)
+
 ## Behavioral and process
 - [Amazon Leadership Principles (official)](https://www.aboutamazon.com/working-at-amazon/our-leadership-principles)
 - [Netflix culture memo](https://jobs.netflix.com/culture)

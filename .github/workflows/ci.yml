@@ -18,6 +18,11 @@ jobs:
         run: python tools/validate.py
       - name: Run tests
         run: python -m unittest discover tests -v
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+      - name: Run JavaScript tests
+        run: node --test tests/js/practical.test.mjs
       - name: Check quiz.html and problem list are up to date
         run: |
           python tools/build_web_quiz.py

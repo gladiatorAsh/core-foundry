@@ -73,6 +73,20 @@ Fill in every `[ ]`. Then map each story to the questions in [question-bank.md](
 - [ ] E.g. moving from .NET/full-stack into GenAI/agents; a certification (GH-300) or a new stack under deadline.
 - **Works for:** Learn and Be Curious · growth mindset (Microsoft) · adaptability.
 
+## Story 11 (full-stack): Unified Action Tracker
+
+- **Situation:** A greenfield multi-tenant React/.NET platform replacing Azure DevOps workflows with a central action-management system. [ ] Why replace ADO? Who were the users?
+- **Actions:** [ ] API and data-model design; Redis-backed low-latency architecture; analytics dashboards; migration tooling.
+- **Result:** Migrated 10K+ records with zero data loss for global users. [ ] Latency, adoption, availability numbers.
+- **Works for:** full-stack ownership · zero-downtime migration · Insist on the Highest Standards · Deliver Results.
+
+## Story 12 (full-stack): Scaling an app from 30 to 5,000+ users
+
+- **Situation:** React + .NET applications and copilots whose adoption grew from about 30 to 5,000+ users. [ ] What drove the growth?
+- **Actions:** [ ] What broke as usage grew (performance, caching, data model, support load) and what you changed. Redis caching and optimized data models for low-latency APIs.
+- **Result:** [ ] Latency/availability before vs after; team practices you introduced.
+- **Works for:** Customer Obsession · scaling · technical judgment · product sense. Also pairs with the Microsoft 365 Admin Center feedback platform (React, .NET, SQL Server, Azure) as a second example.
+
 ---
 
 ## Practice log

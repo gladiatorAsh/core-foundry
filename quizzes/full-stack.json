@@ -1,0 +1,1616 @@
+{
+  "topic": "full-stack",
+  "title": "Full-stack engineering (JS/TS, React, Angular, Node, .NET, Python, cloud, data)",
+  "questions": [
+    {
+      "id": "full-stack-001",
+      "type": "mcq",
+      "question": "What does this print? console.log(1); setTimeout(()=>console.log(2)); Promise.resolve().then(()=>console.log(3)); console.log(4)",
+      "difficulty": 1,
+      "tags": [
+        "javascript",
+        "event-loop"
+      ],
+      "ref": "07-full-stack/javascript-and-typescript.md",
+      "options": [
+        "1 4 3 2",
+        "1 3 4 2",
+        "1 4 2 3",
+        "1 2 3 4"
+      ],
+      "answer": 0,
+      "explanation": "Sync code first, then all microtasks (promise callbacks), then the next macrotask (timer)."
+    },
+    {
+      "id": "full-stack-002",
+      "type": "mcq",
+      "question": "for (var i = 0; i < 3; i++) setTimeout(() => console.log(i)); prints:",
+      "difficulty": 1,
+      "tags": [
+        "javascript",
+        "closures"
+      ],
+      "ref": "07-full-stack/javascript-and-typescript.md",
+      "options": [
+        "3 3 3",
+        "undefined ×3",
+        "2 2 2",
+        "0 1 2"
+      ],
+      "answer": 0,
+      "explanation": "`var` is function-scoped, so all callbacks share one i (3 after the loop). `let` creates a new binding per iteration."
+    },
+    {
+      "id": "full-stack-003",
+      "type": "mcq",
+      "question": "Arrow functions differ from regular functions mainly because they:",
+      "difficulty": 1,
+      "tags": [
+        "javascript"
+      ],
+      "ref": "07-full-stack/javascript-and-typescript.md",
+      "options": [
+        "Always run asynchronously",
+        "Are hoisted",
+        "Have their own `arguments` and `this`",
+        "Don't have their own `this` (they capture it lexically) and can't be used with `new`"
+      ],
+      "answer": 3,
+      "explanation": "That's why they're convenient for callbacks inside methods/classes."
+    },
+    {
+      "id": "full-stack-004",
+      "type": "mcq",
+      "question": "Promise.any resolves when…",
+      "difficulty": 2,
+      "tags": [
+        "javascript",
+        "promises"
+      ],
+      "ref": "07-full-stack/javascript-and-typescript.md",
+      "options": [
+        "The first promise fulfills (rejects with AggregateError only if all reject)",
+        "All promises fulfill",
+        "The first promise settles, whether fulfilled or rejected",
+        "All promises settle"
+      ],
+      "answer": 0,
+      "explanation": "Promise.race = first to settle; allSettled = wait for all; all = fail fast."
+    },
+    {
+      "id": "full-stack-005",
+      "type": "mcq",
+      "question": "In TypeScript, why prefer `unknown` over `any` for external data?",
+      "difficulty": 1,
+      "tags": [
+        "typescript"
+      ],
+      "ref": "07-full-stack/javascript-and-typescript.md",
+      "options": [
+        "They're identical",
+        "`unknown` is faster at runtime",
+        "`unknown` forces you to narrow/validate before use; `any` disables type checking",
+        "`any` can't hold objects"
+      ],
+      "answer": 2,
+      "explanation": "Validate at boundaries (e.g. zod) since types are erased at runtime."
+    },
+    {
+      "id": "full-stack-006",
+      "type": "card",
+      "question": "Name 4 common JavaScript memory leaks.",
+      "difficulty": 2,
+      "tags": [
+        "javascript"
+      ],
+      "ref": "07-full-stack/javascript-and-typescript.md",
+      "answer": "Uncleared timers/intervals; event listeners never removed; closures holding large objects; detached DOM nodes still referenced; unbounded caches/maps (use WeakMap/WeakRef where appropriate)."
+    },
+    {
+      "id": "full-stack-007",
+      "type": "card",
+      "question": "What is a discriminated union in TypeScript?",
+      "difficulty": 2,
+      "tags": [
+        "typescript"
+      ],
+      "ref": "07-full-stack/javascript-and-typescript.md",
+      "answer": "A union of object types sharing a literal 'tag' field (e.g. { ok: true; value } | { ok: false; error }). Checking the tag narrows the type, so the compiler knows which fields exist."
+    },
+    {
+      "id": "full-stack-008",
+      "type": "mcq",
+      "question": "Why shouldn't you use array indexes as React keys for a reorderable list?",
+      "difficulty": 1,
+      "tags": [
+        "react"
+      ],
+      "ref": "07-full-stack/react-and-frameworks.md",
+      "options": [
+        "It causes infinite renders",
+        "State and DOM (e.g. input values, focus) attach to the wrong items when order changes",
+        "Indexes aren't allowed as keys",
+        "It disables memoization globally"
+      ],
+      "answer": 1,
+      "explanation": "Keys identify items across renders; use stable IDs."
+    },
+    {
+      "id": "full-stack-009",
+      "type": "mcq",
+      "question": "Why must hooks be called in the same order on every render?",
+      "difficulty": 1,
+      "tags": [
+        "react",
+        "hooks"
+      ],
+      "ref": "07-full-stack/react-and-frameworks.md",
+      "options": [
+        "Because of the virtual DOM diff",
+        "Because hooks are async",
+        "For performance only",
+        "React tracks hook state by call order, not by name"
+      ],
+      "answer": 3,
+      "explanation": "Hooks inside conditions/loops break the mapping between calls and stored state."
+    },
+    {
+      "id": "full-stack-010",
+      "type": "mcq",
+      "question": "When does useEffect run?",
+      "difficulty": 1,
+      "tags": [
+        "react",
+        "hooks"
+      ],
+      "ref": "07-full-stack/react-and-frameworks.md",
+      "options": [
+        "Before render",
+        "After the render is committed and painted",
+        "Synchronously before paint",
+        "Only once, ever"
+      ],
+      "answer": 1,
+      "explanation": "useLayoutEffect runs before paint (for DOM measurement)."
+    },
+    {
+      "id": "full-stack-011",
+      "type": "mcq",
+      "question": "Best tool for caching and refetching server data in React?",
+      "difficulty": 1,
+      "tags": [
+        "react",
+        "state"
+      ],
+      "ref": "07-full-stack/react-and-frameworks.md",
+      "options": [
+        "Global Redux store for everything",
+        "localStorage",
+        "A query cache like TanStack Query / SWR / RTK Query",
+        "useState in the root component"
+      ],
+      "answer": 2,
+      "explanation": "Server state needs caching, dedupe, retries, invalidation, and stale-while-revalidate."
+    },
+    {
+      "id": "full-stack-012",
+      "type": "mcq",
+      "question": "A React Server Component…",
+      "difficulty": 2,
+      "tags": [
+        "react",
+        "ssr"
+      ],
+      "ref": "07-full-stack/react-and-frameworks.md",
+      "options": [
+        "Runs only on the server, can access data directly, and sends no JavaScript for itself to the client",
+        "Must use useState",
+        "Replaces the need for any client components",
+        "Runs on both server and client identically"
+      ],
+      "answer": 0,
+      "explanation": "Interactive parts are marked 'use client'."
+    },
+    {
+      "id": "full-stack-013",
+      "type": "card",
+      "question": "How do you fix a stale closure in a React effect or callback?",
+      "difficulty": 2,
+      "tags": [
+        "react",
+        "hooks"
+      ],
+      "ref": "07-full-stack/react-and-frameworks.md",
+      "answer": "Include the value in the dependency array; use a functional state update (setX(x => …)); or store the latest value in a ref."
+    },
+    {
+      "id": "full-stack-014",
+      "type": "card",
+      "question": "Three ways to reduce unnecessary React re-renders.",
+      "difficulty": 2,
+      "tags": [
+        "react",
+        "performance"
+      ],
+      "ref": "07-full-stack/react-and-frameworks.md",
+      "answer": "Move state down / pass children as props (composition); split contexts; React.memo for expensive pure children with stable props (useMemo/useCallback); virtualize long lists. Measure with the Profiler first. (The React Compiler can auto-memoize.)"
+    },
+    {
+      "id": "full-stack-015",
+      "type": "mcq",
+      "question": "In Redux Toolkit, why can createSlice reducers appear to mutate state?",
+      "difficulty": 2,
+      "tags": [
+        "redux"
+      ],
+      "ref": "07-full-stack/stack/angular-redux-d3.md",
+      "options": [
+        "Reducers run on a worker",
+        "They use Immer, which produces a new immutable state from changes to a draft",
+        "Redux allows mutation now",
+        "State is copied deeply on every action"
+      ],
+      "answer": 1,
+      "explanation": "Reducers stay pure; Immer handles immutability."
+    },
+    {
+      "id": "full-stack-016",
+      "type": "mcq",
+      "question": "Typeahead search in Angular: which RxJS operator cancels in-flight requests when a new query arrives?",
+      "difficulty": 1,
+      "tags": [
+        "angular",
+        "rxjs"
+      ],
+      "ref": "07-full-stack/stack/angular-redux-d3.md",
+      "options": [
+        "switchMap",
+        "exhaustMap",
+        "concatMap",
+        "mergeMap"
+      ],
+      "answer": 0,
+      "explanation": "mergeMap runs all, concatMap queues, exhaustMap ignores new values while busy (good for submit buttons)."
+    },
+    {
+      "id": "full-stack-017",
+      "type": "mcq",
+      "question": "With ChangeDetectionStrategy.OnPush, a component is checked when:",
+      "difficulty": 2,
+      "tags": [
+        "angular"
+      ],
+      "ref": "07-full-stack/stack/angular-redux-d3.md",
+      "options": [
+        "Its inputs change by reference, an event fires inside it, or an async-pipe observable emits",
+        "Every animation frame",
+        "Never",
+        "Any async event anywhere in the app occurs"
+      ],
+      "answer": 0,
+      "explanation": "Signals give even finer-grained updates and enable zoneless apps."
+    },
+    {
+      "id": "full-stack-018",
+      "type": "mcq",
+      "question": "In D3, what does selection.data(data, key).join('rect') handle?",
+      "difficulty": 2,
+      "tags": [
+        "d3"
+      ],
+      "ref": "07-full-stack/stack/angular-redux-d3.md",
+      "options": [
+        "Only drawing axes",
+        "Fetching data from an API",
+        "Converting data to pixels",
+        "Creating elements for new data (enter), updating existing ones, and removing ones without data (exit)"
+      ],
+      "answer": 3,
+      "explanation": "The key function keeps elements matched to the right datum across updates."
+    },
+    {
+      "id": "full-stack-019",
+      "type": "mcq",
+      "question": "Rendering 50,000 points in a chart: best choice?",
+      "difficulty": 2,
+      "tags": [
+        "d3",
+        "performance"
+      ],
+      "ref": "07-full-stack/stack/angular-redux-d3.md",
+      "options": [
+        "SVG with one element per point",
+        "D3 transitions on each point",
+        "Canvas (or WebGL), possibly with SVG for axes",
+        "HTML divs"
+      ],
+      "answer": 2,
+      "explanation": "SVG slows down beyond a few thousand DOM nodes."
+    },
+    {
+      "id": "full-stack-020",
+      "type": "card",
+      "question": "Two ways to combine D3 with React, and which is the default?",
+      "difficulty": 2,
+      "tags": [
+        "d3",
+        "react"
+      ],
+      "ref": "07-full-stack/stack/angular-redux-d3.md",
+      "answer": "1) React renders the SVG; D3 supplies math (scales, shapes, layouts). This is the default: declarative and testable. 2) D3 owns a container through a ref inside useEffect, for complex transitions/zoom/force layouts; React doesn't touch its children."
+    },
+    {
+      "id": "full-stack-021",
+      "type": "mcq",
+      "question": "Which metric replaced FID as a Core Web Vital in March 2024?",
+      "difficulty": 1,
+      "tags": [
+        "performance"
+      ],
+      "ref": "07-full-stack/browser-performance-accessibility.md",
+      "options": [
+        "TTI",
+        "TBT",
+        "FCP",
+        "INP (Interaction to Next Paint)"
+      ],
+      "answer": 3,
+      "explanation": "Good thresholds: LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1 at the 75th percentile."
+    },
+    {
+      "id": "full-stack-022",
+      "type": "mcq",
+      "question": "Your page has poor CLS. Most likely fix?",
+      "difficulty": 1,
+      "tags": [
+        "performance"
+      ],
+      "ref": "07-full-stack/browser-performance-accessibility.md",
+      "options": [
+        "Use HTTP/3",
+        "Increase cache TTL",
+        "Reserve space for images/ads/embeds (width/height or aspect-ratio) and avoid inserting content above existing content",
+        "Minify JavaScript"
+      ],
+      "answer": 2,
+      "explanation": "CLS measures unexpected layout shifts."
+    },
+    {
+      "id": "full-stack-023",
+      "type": "mcq",
+      "question": "Poor INP is usually caused by:",
+      "difficulty": 2,
+      "tags": [
+        "performance"
+      ],
+      "ref": "07-full-stack/browser-performance-accessibility.md",
+      "options": [
+        "Missing alt text",
+        "Long JavaScript tasks blocking the main thread during interactions",
+        "Large images",
+        "Slow DNS"
+      ],
+      "answer": 1,
+      "explanation": "Break up long tasks, yield, defer non-critical JS, move work to Web Workers."
+    },
+    {
+      "id": "full-stack-024",
+      "type": "mcq",
+      "question": "Which properties can be animated without triggering layout or paint?",
+      "difficulty": 1,
+      "tags": [
+        "performance",
+        "css"
+      ],
+      "ref": "07-full-stack/browser-performance-accessibility.md",
+      "options": [
+        "transform and opacity",
+        "margin and padding",
+        "width and height",
+        "top and left"
+      ],
+      "answer": 0,
+      "explanation": "They're handled by the compositor."
+    },
+    {
+      "id": "full-stack-025",
+      "type": "mcq",
+      "question": "Minimum WCAG AA contrast ratio for normal body text?",
+      "difficulty": 1,
+      "tags": [
+        "accessibility"
+      ],
+      "ref": "07-full-stack/browser-performance-accessibility.md",
+      "options": [
+        "2:1",
+        "7:1",
+        "3:1",
+        "4.5:1"
+      ],
+      "answer": 3,
+      "explanation": "3:1 for large text and UI components; AAA is 7:1."
+    },
+    {
+      "id": "full-stack-026",
+      "type": "mcq",
+      "question": "`<script defer>` means:",
+      "difficulty": 1,
+      "tags": [
+        "browser"
+      ],
+      "ref": "07-full-stack/browser-performance-accessibility.md",
+      "options": [
+        "Block parsing until downloaded",
+        "Never execute",
+        "Download in parallel, execute in order after HTML parsing finishes",
+        "Execute immediately when downloaded"
+      ],
+      "answer": 2,
+      "explanation": "`async` executes as soon as it downloads, in no guaranteed order."
+    },
+    {
+      "id": "full-stack-027",
+      "type": "card",
+      "question": "Explain what happens when you type a URL and press Enter (short version).",
+      "difficulty": 1,
+      "tags": [
+        "browser"
+      ],
+      "ref": "07-full-stack/browser-performance-accessibility.md",
+      "answer": "DNS → TCP/TLS (or QUIC) → HTTP request → server/CDN response → parse HTML into the DOM and CSS into the CSSOM → render tree → layout → paint → composite; scripts may block parsing and trigger re-layout; subresources load in parallel."
+    },
+    {
+      "id": "full-stack-028",
+      "type": "mcq",
+      "question": "In the RADIO framework for frontend design, what does the 'I' cover?",
+      "difficulty": 2,
+      "tags": [
+        "frontend-design"
+      ],
+      "ref": "07-full-stack/frontend-system-design.md",
+      "options": [
+        "Infrastructure",
+        "Indexing",
+        "Internationalization only",
+        "Interface: the API contracts between client and server, and component props"
+      ],
+      "answer": 3,
+      "explanation": "Requirements, Architecture, Data model, Interface, Optimizations."
+    },
+    {
+      "id": "full-stack-029",
+      "type": "mcq",
+      "question": "Autocomplete: how do you avoid showing results from an older, slower request?",
+      "difficulty": 2,
+      "tags": [
+        "frontend-design"
+      ],
+      "ref": "07-full-stack/frontend-system-design.md",
+      "options": [
+        "Abort stale requests with AbortController (or ignore responses whose request ID isn't the latest)",
+        "Disable the input while loading",
+        "Cache everything forever",
+        "Use a longer debounce only"
+      ],
+      "answer": 0,
+      "explanation": "Out-of-order responses are a classic bug."
+    },
+    {
+      "id": "full-stack-030",
+      "type": "mcq",
+      "question": "Collaborative editing without a central server transforming operations (good offline support):",
+      "difficulty": 3,
+      "tags": [
+        "frontend-design"
+      ],
+      "ref": "07-full-stack/frontend-system-design.md",
+      "options": [
+        "Operational transformation",
+        "Last-write-wins on the whole document",
+        "Pessimistic locking",
+        "CRDTs (e.g. Yjs, Automerge)"
+      ],
+      "answer": 3,
+      "explanation": "OT typically relies on a central server; CRDTs merge without coordination."
+    },
+    {
+      "id": "full-stack-031",
+      "type": "card",
+      "question": "Name 6 optimizations to discuss in any frontend system design.",
+      "difficulty": 1,
+      "tags": [
+        "frontend-design"
+      ],
+      "ref": "07-full-stack/frontend-system-design.md",
+      "answer": "Virtualization, code splitting/lazy loading, caching (HTTP + query cache), prefetching, optimistic updates, image optimization, SSR/streaming for LCP, accessibility, error/loading states, security (XSS/CSP), offline support, RUM monitoring."
+    },
+    {
+      "id": "full-stack-032",
+      "type": "mcq",
+      "question": "Which HTTP methods are idempotent by definition?",
+      "difficulty": 1,
+      "tags": [
+        "api"
+      ],
+      "ref": "07-full-stack/backend-and-apis.md",
+      "options": [
+        "GET, PUT, DELETE (and HEAD, OPTIONS)",
+        "All of them",
+        "POST and PATCH",
+        "Only GET"
+      ],
+      "answer": 0,
+      "explanation": "Make POSTs safe to retry with an Idempotency-Key header."
+    },
+    {
+      "id": "full-stack-033",
+      "type": "mcq",
+      "question": "Which OAuth 2.0 flow should a single-page app or mobile app use?",
+      "difficulty": 1,
+      "tags": [
+        "auth"
+      ],
+      "ref": "07-full-stack/backend-and-apis.md",
+      "options": [
+        "Client credentials",
+        "Implicit flow",
+        "Authorization Code with PKCE",
+        "Resource owner password credentials"
+      ],
+      "answer": 2,
+      "explanation": "Implicit is deprecated; client credentials is for service-to-service."
+    },
+    {
+      "id": "full-stack-034",
+      "type": "mcq",
+      "question": "What does OpenID Connect add to OAuth 2.0?",
+      "difficulty": 2,
+      "tags": [
+        "auth"
+      ],
+      "ref": "07-full-stack/backend-and-apis.md",
+      "options": [
+        "Authentication: an ID token describing who the user is",
+        "Refresh tokens",
+        "Rate limiting",
+        "Encryption of access tokens"
+      ],
+      "answer": 0,
+      "explanation": "OAuth 2.0 alone is delegated authorization."
+    },
+    {
+      "id": "full-stack-035",
+      "type": "mcq",
+      "question": "A client gets 409 Conflict. Most likely meaning?",
+      "difficulty": 2,
+      "tags": [
+        "api"
+      ],
+      "ref": "07-full-stack/backend-and-apis.md",
+      "options": [
+        "The resource was moved permanently",
+        "The request conflicts with current resource state (e.g. a version mismatch or duplicate)",
+        "The client isn't authenticated",
+        "The server is down"
+      ],
+      "answer": 1,
+      "explanation": "412 Precondition Failed is the ETag/If-Match variant."
+    },
+    {
+      "id": "full-stack-036",
+      "type": "mcq",
+      "question": "GraphQL's classic performance pitfall:",
+      "difficulty": 2,
+      "tags": [
+        "api"
+      ],
+      "ref": "07-full-stack/backend-and-apis.md",
+      "options": [
+        "No typing",
+        "N+1 resolver calls; fix with batching (DataLoader)",
+        "It can't paginate",
+        "Over-fetching"
+      ],
+      "answer": 1,
+      "explanation": "Also add query cost/depth limits."
+    },
+    {
+      "id": "full-stack-037",
+      "type": "card",
+      "question": "JWT access tokens vs server sessions: trade-offs?",
+      "difficulty": 2,
+      "tags": [
+        "auth"
+      ],
+      "ref": "07-full-stack/backend-and-apis.md",
+      "answer": "JWT: stateless, scales across services, hard to revoke early, so keep them short-lived with rotating refresh tokens; validate iss/aud/exp/signature. Sessions: server-side state, easy revocation, need CSRF protection with cookies. For SPAs, a BFF with HttpOnly cookies avoids tokens in localStorage."
+    },
+    {
+      "id": "full-stack-038",
+      "type": "mcq",
+      "question": "Index on (customer_id, created_at). Which query can NOT use it efficiently?",
+      "difficulty": 1,
+      "tags": [
+        "sql",
+        "indexes"
+      ],
+      "ref": "07-full-stack/databases-and-sql.md",
+      "options": [
+        "WHERE customer_id = 5 AND created_at > '2026-01-01'",
+        "WHERE customer_id = 5 ORDER BY created_at",
+        "WHERE customer_id = 5",
+        "WHERE created_at > '2026-01-01' (without customer_id)"
+      ],
+      "answer": 3,
+      "explanation": "Leftmost-prefix rule."
+    },
+    {
+      "id": "full-stack-039",
+      "type": "mcq",
+      "question": "Two users decrement stock at the same time and one update is lost. Simplest robust fix?",
+      "difficulty": 2,
+      "tags": [
+        "sql",
+        "transactions"
+      ],
+      "ref": "07-full-stack/databases-and-sql.md",
+      "options": [
+        "Read the value, then update it in two queries",
+        "An atomic update: UPDATE … SET stock = stock - 1 WHERE id = ? AND stock > 0",
+        "Raise the isolation level to read uncommitted",
+        "Cache the stock in Redis only"
+      ],
+      "answer": 1,
+      "explanation": "Or SELECT … FOR UPDATE, or optimistic locking with a version column."
+    },
+    {
+      "id": "full-stack-040",
+      "type": "mcq",
+      "question": "ROW_NUMBER vs RANK vs DENSE_RANK on ties (scores 100, 100, 90):",
+      "difficulty": 2,
+      "tags": [
+        "sql"
+      ],
+      "ref": "07-full-stack/databases-and-sql.md",
+      "options": [
+        "1,2,3 vs 1,1,3 vs 1,1,2",
+        "1,2,3 for all",
+        "All give 1,1,2",
+        "1,1,2 vs 1,2,3 vs 1,1,3"
+      ],
+      "answer": 0,
+      "explanation": "RANK leaves gaps after ties; DENSE_RANK doesn't."
+    },
+    {
+      "id": "full-stack-041",
+      "type": "mcq",
+      "question": "Zero-downtime column rename. Correct approach?",
+      "difficulty": 2,
+      "tags": [
+        "sql",
+        "migrations"
+      ],
+      "ref": "07-full-stack/databases-and-sql.md",
+      "options": [
+        "Rename it in the ORM only",
+        "ALTER TABLE RENAME during the deploy",
+        "Expand → migrate → contract: add the new column, dual-write, backfill, switch reads, drop the old column in a later release",
+        "Take a maintenance window every time"
+      ],
+      "answer": 2,
+      "explanation": "Old and new app versions must both work during a deploy."
+    },
+    {
+      "id": "full-stack-042",
+      "type": "card",
+      "question": "What's the N+1 query problem and how do you fix it?",
+      "difficulty": 1,
+      "tags": [
+        "sql",
+        "orm"
+      ],
+      "ref": "07-full-stack/databases-and-sql.md",
+      "answer": "Loading a list (1 query) and then a related entity per row (N queries). Fix with eager loading (EF Core Include / SQLAlchemy selectinload), batching (DataLoader), projections, or a join; watch query logs."
+    },
+    {
+      "id": "full-stack-043",
+      "type": "mcq",
+      "question": "What's #1 in the OWASP Top 10:2025?",
+      "difficulty": 1,
+      "tags": [
+        "security"
+      ],
+      "ref": "07-full-stack/web-security.md",
+      "options": [
+        "Broken Access Control",
+        "Software Supply Chain Failures",
+        "Injection",
+        "Cryptographic Failures"
+      ],
+      "answer": 0,
+      "explanation": "New in 2025: Software Supply Chain Failures (A03) and Mishandling of Exceptional Conditions (A10)."
+    },
+    {
+      "id": "full-stack-044",
+      "type": "mcq",
+      "question": "Main defense against CSRF for cookie-based sessions?",
+      "difficulty": 1,
+      "tags": [
+        "security"
+      ],
+      "ref": "07-full-stack/web-security.md",
+      "options": [
+        "CORS headers",
+        "Hashing passwords",
+        "SameSite cookies plus anti-CSRF tokens (and checking Origin)",
+        "HTTPS alone"
+      ],
+      "answer": 2,
+      "explanation": "CORS controls reading cross-origin responses; it doesn't stop a browser from sending a forged request."
+    },
+    {
+      "id": "full-stack-045",
+      "type": "mcq",
+      "question": "CORS is:",
+      "difficulty": 1,
+      "tags": [
+        "security"
+      ],
+      "ref": "07-full-stack/web-security.md",
+      "options": [
+        "A browser mechanism letting a server opt in to cross-origin reads of its responses",
+        "A server-side firewall",
+        "A way to prevent SQL injection",
+        "A replacement for authentication"
+      ],
+      "answer": 0,
+      "explanation": "It doesn't protect against non-browser clients."
+    },
+    {
+      "id": "full-stack-046",
+      "type": "mcq",
+      "question": "Best way to store user passwords?",
+      "difficulty": 1,
+      "tags": [
+        "security"
+      ],
+      "ref": "07-full-stack/web-security.md",
+      "options": [
+        "AES encryption with a key in config",
+        "SHA-256 once",
+        "Base64",
+        "A slow, salted password hash such as Argon2id or bcrypt"
+      ],
+      "answer": 3,
+      "explanation": "Hashing is one-way; slow hashes resist brute force."
+    },
+    {
+      "id": "full-stack-047",
+      "type": "mcq",
+      "question": "An AI agent fetches user-supplied URLs. Biggest server-side risk?",
+      "difficulty": 2,
+      "tags": [
+        "security",
+        "ai"
+      ],
+      "ref": "07-full-stack/web-security.md",
+      "options": [
+        "Clickjacking",
+        "CSRF",
+        "SSRF: requests to internal services or the cloud metadata endpoint",
+        "XSS"
+      ],
+      "answer": 2,
+      "explanation": "Allow-list destinations, block private ranges after DNS resolution, disable redirects, restrict egress."
+    },
+    {
+      "id": "full-stack-048",
+      "type": "mcq",
+      "question": "Liveness vs readiness probes in Kubernetes:",
+      "difficulty": 2,
+      "tags": [
+        "devops"
+      ],
+      "ref": "07-full-stack/devops-and-cloud.md",
+      "options": [
+        "Readiness restarts the container",
+        "Liveness controls autoscaling",
+        "They're the same",
+        "Liveness restarts a stuck container; readiness removes a pod from load balancing until it's ready"
+      ],
+      "answer": 3,
+      "explanation": "Misconfigured liveness probes cause restart loops."
+    },
+    {
+      "id": "full-stack-049",
+      "type": "mcq",
+      "question": "Which deployment strategy sends a small % of traffic to the new version and ramps up based on metrics?",
+      "difficulty": 1,
+      "tags": [
+        "devops"
+      ],
+      "ref": "07-full-stack/devops-and-cloud.md",
+      "options": [
+        "Recreate",
+        "Rolling with no health checks",
+        "Blue/green",
+        "Canary"
+      ],
+      "answer": 3,
+      "explanation": "Blue/green switches all traffic at once between two environments."
+    },
+    {
+      "id": "full-stack-050",
+      "type": "mcq",
+      "question": "Why copy package manifests and restore dependencies before copying source code in a Dockerfile?",
+      "difficulty": 1,
+      "tags": [
+        "docker"
+      ],
+      "ref": "07-full-stack/stack/docker-and-postman.md",
+      "options": [
+        "To make the container run as non-root",
+        "To maximize layer caching, so dependencies are only reinstalled when manifests change",
+        "To reduce security risk",
+        "Docker requires it"
+      ],
+      "answer": 1,
+      "explanation": "Order layers from least to most frequently changing."
+    },
+    {
+      "id": "full-stack-051",
+      "type": "mcq",
+      "question": "Running Postman collections in CI is done with:",
+      "difficulty": 1,
+      "tags": [
+        "postman",
+        "testing"
+      ],
+      "ref": "07-full-stack/stack/docker-and-postman.md",
+      "options": [
+        "Swagger UI",
+        "Docker Compose",
+        "Newman (or the Postman CLI)",
+        "Jest"
+      ],
+      "answer": 2,
+      "explanation": "Use environments and data files for different targets."
+    },
+    {
+      "id": "full-stack-052",
+      "type": "card",
+      "question": "Name 5 Dockerfile best practices.",
+      "difficulty": 1,
+      "tags": [
+        "docker"
+      ],
+      "ref": "07-full-stack/stack/docker-and-postman.md",
+      "answer": "Multi-stage builds; pinned slim/distroless base images; cache-friendly layer order; .dockerignore; run as non-root; no secrets baked in; exec-form ENTRYPOINT for signals; healthchecks; image scanning."
+    },
+    {
+      "id": "full-stack-053",
+      "type": "mcq",
+      "question": "Which Node.js operations use the libuv thread pool?",
+      "difficulty": 2,
+      "tags": [
+        "nodejs"
+      ],
+      "ref": "07-full-stack/stack/nodejs.md",
+      "options": [
+        "All network sockets",
+        "setTimeout callbacks",
+        "File system calls, dns.lookup, some crypto (pbkdf2/scrypt), and zlib",
+        "Every promise"
+      ],
+      "answer": 2,
+      "explanation": "Network I/O uses the OS's non-blocking APIs. The default pool size is 4 (UV_THREADPOOL_SIZE)."
+    },
+    {
+      "id": "full-stack-054",
+      "type": "mcq",
+      "question": "A CPU-heavy image resize in an Express handler makes the whole API slow. Fix?",
+      "difficulty": 1,
+      "tags": [
+        "nodejs"
+      ],
+      "ref": "07-full-stack/stack/nodejs.md",
+      "options": [
+        "Use async/await around it",
+        "Increase UV_THREADPOOL_SIZE only",
+        "Move the work to worker_threads or a background job queue",
+        "Add more middleware"
+      ],
+      "answer": 2,
+      "explanation": "async/await doesn't make CPU work non-blocking; the single JS thread is still busy."
+    },
+    {
+      "id": "full-stack-055",
+      "type": "mcq",
+      "question": "Express error-handling middleware is identified by:",
+      "difficulty": 2,
+      "tags": [
+        "nodejs"
+      ],
+      "ref": "07-full-stack/stack/nodejs.md",
+      "options": [
+        "Being registered first",
+        "Having four parameters: (err, req, res, next)",
+        "Returning a promise",
+        "Being named errorHandler"
+      ],
+      "answer": 1,
+      "explanation": "Register it after routes."
+    },
+    {
+      "id": "full-stack-056",
+      "type": "mcq",
+      "question": "Which runs first: process.nextTick or a resolved promise's .then callback?",
+      "difficulty": 2,
+      "tags": [
+        "nodejs",
+        "event-loop"
+      ],
+      "ref": "07-full-stack/stack/nodejs.md",
+      "options": [
+        "The promise callback",
+        "process.nextTick",
+        "Neither runs until the next timer phase",
+        "They're random"
+      ],
+      "answer": 1,
+      "explanation": "The nextTick queue drains before the promise microtask queue."
+    },
+    {
+      "id": "full-stack-057",
+      "type": "mcq",
+      "question": "Why prefer stream.pipeline() over .pipe()?",
+      "difficulty": 2,
+      "tags": [
+        "nodejs",
+        "streams"
+      ],
+      "ref": "07-full-stack/stack/nodejs.md",
+      "options": [
+        "pipeline buffers everything in memory",
+        ".pipe() is deprecated in all versions",
+        "pipeline propagates errors and cleans up all streams; .pipe() doesn't forward errors",
+        "pipeline is synchronous"
+      ],
+      "answer": 2,
+      "explanation": "Also respects backpressure."
+    },
+    {
+      "id": "full-stack-058",
+      "type": "card",
+      "question": "Graceful shutdown in a Node.js service: steps?",
+      "difficulty": 2,
+      "tags": [
+        "nodejs"
+      ],
+      "ref": "07-full-stack/stack/nodejs.md",
+      "answer": "On SIGTERM: stop accepting new connections (server.close), let in-flight requests finish with a timeout, close DB pools/queues, flush logs, then exit. The orchestrator then removes and replaces the pod."
+    },
+    {
+      "id": "full-stack-059",
+      "type": "mcq",
+      "question": "IEnumerable<T> vs IQueryable<T> with EF Core:",
+      "difficulty": 1,
+      "tags": [
+        "dotnet",
+        "linq"
+      ],
+      "ref": "07-full-stack/stack/csharp-dotnet.md",
+      "options": [
+        "IQueryable builds an expression tree translated to SQL; IEnumerable runs the rest of the query in memory",
+        "IQueryable always loads the whole table",
+        "They're identical",
+        "IEnumerable is translated to SQL"
+      ],
+      "answer": 0,
+      "explanation": "Calling ToList()/AsEnumerable() too early pulls everything into memory."
+    },
+    {
+      "id": "full-stack-060",
+      "type": "mcq",
+      "question": "Calling .Result on an async method inside ASP.NET code risks:",
+      "difficulty": 1,
+      "tags": [
+        "dotnet",
+        "async"
+      ],
+      "ref": "07-full-stack/stack/csharp-dotnet.md",
+      "options": [
+        "Memory leaks only",
+        "Nothing; it's the recommended pattern",
+        "Deadlocks (with a synchronization context) and thread-pool starvation",
+        "Compile errors"
+      ],
+      "answer": 2,
+      "explanation": "Use async all the way down."
+    },
+    {
+      "id": "full-stack-061",
+      "type": "mcq",
+      "question": "Injecting a scoped service (like DbContext) into a singleton causes:",
+      "difficulty": 2,
+      "tags": [
+        "dotnet",
+        "di"
+      ],
+      "ref": "07-full-stack/stack/csharp-dotnet.md",
+      "options": [
+        "A captive dependency: the scoped instance lives forever and is shared across requests",
+        "Nothing unusual",
+        "A new instance per call",
+        "A compile error"
+      ],
+      "answer": 0,
+      "explanation": "ASP.NET Core can detect this with scope validation in development."
+    },
+    {
+      "id": "full-stack-062",
+      "type": "mcq",
+      "question": "Objects of at least how many bytes go on the .NET Large Object Heap?",
+      "difficulty": 3,
+      "tags": [
+        "dotnet",
+        "gc"
+      ],
+      "ref": "07-full-stack/stack/csharp-dotnet.md",
+      "options": [
+        "64 KB exactly",
+        "85,000 bytes",
+        "8 KB",
+        "1 MB"
+      ],
+      "answer": 1,
+      "explanation": "The LOH is collected with gen 2; pool large buffers (ArrayPool) to avoid fragmentation."
+    },
+    {
+      "id": "full-stack-063",
+      "type": "mcq",
+      "question": "Why use IHttpClientFactory instead of new HttpClient() per request?",
+      "difficulty": 2,
+      "tags": [
+        "dotnet"
+      ],
+      "ref": "07-full-stack/stack/csharp-dotnet.md",
+      "options": [
+        "It's required for HTTPS",
+        "It pools handlers to avoid socket exhaustion and handles DNS changes",
+        "It makes requests synchronous",
+        "HttpClient is deprecated"
+      ],
+      "answer": 1,
+      "explanation": "Add resilience (retries, circuit breakers) via Polly/Microsoft.Extensions.Http.Resilience."
+    },
+    {
+      "id": "full-stack-064",
+      "type": "mcq",
+      "question": "In ASP.NET MVC, which attribute protects a POST action against CSRF?",
+      "difficulty": 2,
+      "tags": [
+        "dotnet",
+        "mvc",
+        "security"
+      ],
+      "ref": "07-full-stack/stack/csharp-dotnet.md",
+      "options": [
+        "[HttpPost]",
+        "[ValidateAntiForgeryToken]",
+        "[Authorize]",
+        "[AllowAnonymous]"
+      ],
+      "answer": 1,
+      "explanation": "Paired with the anti-forgery token in the form."
+    },
+    {
+      "id": "full-stack-065",
+      "type": "card",
+      "question": "Explain .NET DI lifetimes.",
+      "difficulty": 1,
+      "tags": [
+        "dotnet",
+        "di"
+      ],
+      "ref": "07-full-stack/stack/csharp-dotnet.md",
+      "answer": "Singleton: one instance for the app. Scoped: one per request (DbContext). Transient: new every resolution. Never let a longer-lived service capture a shorter-lived one."
+    },
+    {
+      "id": "full-stack-066",
+      "type": "card",
+      "question": "When would you use AsNoTracking and AsSplitQuery in EF Core?",
+      "difficulty": 2,
+      "tags": [
+        "dotnet",
+        "efcore"
+      ],
+      "ref": "07-full-stack/stack/csharp-dotnet.md",
+      "answer": "AsNoTracking for read-only queries (no change tracking, so faster and less memory). AsSplitQuery when including multiple collections to avoid cartesian explosion from one huge JOIN."
+    },
+    {
+      "id": "full-stack-067",
+      "type": "mcq",
+      "question": "A FastAPI endpoint is `async def` and calls requests.get(). What's the problem?",
+      "difficulty": 1,
+      "tags": [
+        "python",
+        "fastapi"
+      ],
+      "ref": "07-full-stack/stack/python.md",
+      "options": [
+        "Nothing",
+        "FastAPI forbids requests",
+        "It runs in a separate process automatically",
+        "The blocking call stalls the event loop for every request"
+      ],
+      "answer": 3,
+      "explanation": "Use httpx async, or make the endpoint `def` (threadpool), or asyncio.to_thread."
+    },
+    {
+      "id": "full-stack-068",
+      "type": "mcq",
+      "question": "Python threads speed up which workload?",
+      "difficulty": 1,
+      "tags": [
+        "python"
+      ],
+      "ref": "07-full-stack/stack/python.md",
+      "options": [
+        "I/O-bound work (network, disk)",
+        "CPU-bound number crunching in pure Python",
+        "Both equally",
+        "Neither"
+      ],
+      "answer": 0,
+      "explanation": "The GIL allows one thread to run Python bytecode at a time; use processes for CPU-bound work."
+    },
+    {
+      "id": "full-stack-069",
+      "type": "card",
+      "question": "Write the signature of a retry decorator in Python and explain functools.wraps.",
+      "difficulty": 2,
+      "tags": [
+        "python"
+      ],
+      "ref": "07-full-stack/stack/python.md",
+      "answer": "def retry(times=3, delay=0.1): def deco(fn): @functools.wraps(fn) def wrapper(*a, **k): … return wrapper; return deco. functools.wraps copies __name__, __doc__, etc. so the wrapped function keeps its identity (logging, docs, introspection)."
+    },
+    {
+      "id": "full-stack-070",
+      "type": "mcq",
+      "question": "Why does z-index: 9999 sometimes not bring an element to the front?",
+      "difficulty": 2,
+      "tags": [
+        "css"
+      ],
+      "ref": "07-full-stack/stack/html-css.md",
+      "options": [
+        "It only works on flex items",
+        "z-index max is 1000",
+        "It needs !important",
+        "z-index only competes within the same stacking context; an ancestor creates a new one"
+      ],
+      "answer": 3,
+      "explanation": "Contexts come from positioned elements with z-index, opacity < 1, transform, filter, isolation."
+    },
+    {
+      "id": "full-stack-071",
+      "type": "mcq",
+      "question": "Which is more specific: #nav a or .menu .item a?",
+      "difficulty": 1,
+      "tags": [
+        "css"
+      ],
+      "ref": "07-full-stack/stack/html-css.md",
+      "options": [
+        "Whichever comes last",
+        ".menu .item a",
+        "#nav a (one ID beats any number of classes)",
+        "They're equal"
+      ],
+      "answer": 2,
+      "explanation": "Specificity (1,0,1) vs (0,2,1)."
+    },
+    {
+      "id": "full-stack-072",
+      "type": "mcq",
+      "question": "Two-dimensional page layout (rows and columns): best tool?",
+      "difficulty": 1,
+      "tags": [
+        "css"
+      ],
+      "ref": "07-full-stack/stack/html-css.md",
+      "options": [
+        "Tables",
+        "CSS Grid",
+        "Floats",
+        "Flexbox"
+      ],
+      "answer": 1,
+      "explanation": "Flexbox is for one dimension."
+    },
+    {
+      "id": "full-stack-073",
+      "type": "mcq",
+      "question": "Components that adapt to their container's width (not the viewport) use:",
+      "difficulty": 2,
+      "tags": [
+        "css"
+      ],
+      "ref": "07-full-stack/stack/html-css.md",
+      "options": [
+        "vw units",
+        "JavaScript resize observers only",
+        "Container queries (@container)",
+        "Media queries"
+      ],
+      "answer": 2,
+      "explanation": "Widely supported in modern browsers."
+    },
+    {
+      "id": "full-stack-074",
+      "type": "mcq",
+      "question": "Cosmos DB default consistency level?",
+      "difficulty": 1,
+      "tags": [
+        "azure",
+        "cosmos"
+      ],
+      "ref": "07-full-stack/stack/azure.md",
+      "options": [
+        "Eventual",
+        "Strong",
+        "Bounded staleness",
+        "Session"
+      ],
+      "answer": 3,
+      "explanation": "Five levels: Strong, Bounded staleness, Session, Consistent prefix, Eventual."
+    },
+    {
+      "id": "full-stack-075",
+      "type": "mcq",
+      "question": "Cosmos DB returns 429s on one container while total RU/s looks fine. Likely cause?",
+      "difficulty": 2,
+      "tags": [
+        "azure",
+        "cosmos"
+      ],
+      "ref": "07-full-stack/stack/azure.md",
+      "options": [
+        "Too many indexes is impossible",
+        "The region is down",
+        "The SDK is outdated",
+        "A hot partition key concentrating traffic on one physical partition"
+      ],
+      "answer": 3,
+      "explanation": "Pick a high-cardinality, evenly distributed partition key (or a hierarchical key)."
+    },
+    {
+      "id": "full-stack-076",
+      "type": "mcq",
+      "question": "Durable Functions orchestrator code must be:",
+      "difficulty": 2,
+      "tags": [
+        "azure",
+        "functions"
+      ],
+      "ref": "07-full-stack/stack/azure.md",
+      "options": [
+        "Stateless with no awaits",
+        "Written in Python only",
+        "Async void",
+        "Deterministic, because orchestrations are replayed from history"
+      ],
+      "answer": 3,
+      "explanation": "Use context APIs for time, random values, and I/O via activities."
+    },
+    {
+      "id": "full-stack-077",
+      "type": "mcq",
+      "question": "Business commands that must not be lost, with dead-lettering and FIFO sessions. Which Azure service?",
+      "difficulty": 1,
+      "tags": [
+        "azure",
+        "messaging"
+      ],
+      "ref": "07-full-stack/stack/azure.md",
+      "options": [
+        "Event Grid",
+        "Service Bus",
+        "Event Hubs",
+        "Blob Storage"
+      ],
+      "answer": 1,
+      "explanation": "Event Grid = reactive event routing; Event Hubs = high-throughput streaming."
+    },
+    {
+      "id": "full-stack-078",
+      "type": "mcq",
+      "question": "Zero-downtime deploys with instant rollback on App Service use:",
+      "difficulty": 1,
+      "tags": [
+        "azure"
+      ],
+      "ref": "07-full-stack/stack/azure.md",
+      "options": [
+        "Restarting the app",
+        "Scaling up the plan",
+        "Logic Apps",
+        "Deployment slots (deploy to staging, warm up, swap)"
+      ],
+      "answer": 3,
+      "explanation": "Swap back to roll back."
+    },
+    {
+      "id": "full-stack-079",
+      "type": "card",
+      "question": "How should an Azure app access secrets?",
+      "difficulty": 1,
+      "tags": [
+        "azure",
+        "security"
+      ],
+      "ref": "07-full-stack/stack/azure.md",
+      "answer": "Store them in Key Vault and access with a managed identity (DefaultAzureCredential / Key Vault references); RBAC on the vault; soft delete + purge protection; rotation. No secrets in code or config."
+    },
+    {
+      "id": "full-stack-080",
+      "type": "mcq",
+      "question": "In IAM policy evaluation, what wins?",
+      "difficulty": 1,
+      "tags": [
+        "aws",
+        "iam"
+      ],
+      "ref": "07-full-stack/stack/aws.md",
+      "options": [
+        "The most recently attached policy",
+        "An explicit Deny",
+        "Resource policies always",
+        "An explicit Allow"
+      ],
+      "answer": 1,
+      "explanation": "Otherwise access requires an explicit Allow; the default is implicit deny."
+    },
+    {
+      "id": "full-stack-081",
+      "type": "mcq",
+      "question": "RDS Multi-AZ is mainly for:",
+      "difficulty": 1,
+      "tags": [
+        "aws",
+        "rds"
+      ],
+      "ref": "07-full-stack/stack/aws.md",
+      "options": [
+        "Cheaper storage",
+        "Cross-region analytics",
+        "Read scaling",
+        "High availability via a synchronous standby with automatic failover"
+      ],
+      "answer": 3,
+      "explanation": "Read replicas (async) are for read scaling."
+    },
+    {
+      "id": "full-stack-082",
+      "type": "mcq",
+      "question": "Maximum execution time of an AWS Lambda invocation?",
+      "difficulty": 1,
+      "tags": [
+        "aws",
+        "lambda"
+      ],
+      "ref": "07-full-stack/stack/aws.md",
+      "options": [
+        "1 hour",
+        "5 minutes",
+        "Unlimited",
+        "15 minutes"
+      ],
+      "answer": 3,
+      "explanation": "Long work → Step Functions, ECS/Fargate, or batch."
+    },
+    {
+      "id": "full-stack-083",
+      "type": "mcq",
+      "question": "In ECS, which role does your application code use to call other AWS services?",
+      "difficulty": 2,
+      "tags": [
+        "aws",
+        "ecs"
+      ],
+      "ref": "07-full-stack/stack/aws.md",
+      "options": [
+        "The task execution role",
+        "The task role",
+        "The account root user",
+        "The EC2 instance root role"
+      ],
+      "answer": 1,
+      "explanation": "The execution role is for the ECS agent (pull images, fetch secrets, write logs)."
+    },
+    {
+      "id": "full-stack-084",
+      "type": "mcq",
+      "question": "Let browsers upload large files directly to S3 without passing through your API:",
+      "difficulty": 1,
+      "tags": [
+        "aws",
+        "s3"
+      ],
+      "ref": "07-full-stack/stack/aws.md",
+      "options": [
+        "Store files in RDS",
+        "Presigned URLs (with multipart upload for big files)",
+        "Make the bucket public",
+        "Proxy through API Gateway"
+      ],
+      "answer": 1,
+      "explanation": "Time-limited, scoped permissions."
+    },
+    {
+      "id": "full-stack-085",
+      "type": "mcq",
+      "question": "Lambda functions connecting to RDS exhaust database connections under load. Fix?",
+      "difficulty": 2,
+      "tags": [
+        "aws",
+        "lambda",
+        "rds"
+      ],
+      "ref": "07-full-stack/stack/aws.md",
+      "options": [
+        "Multi-AZ",
+        "RDS Proxy for connection pooling",
+        "More Lambda memory",
+        "A bigger instance only"
+      ],
+      "answer": 1,
+      "explanation": "Each concurrent execution otherwise opens its own connections."
+    },
+    {
+      "id": "full-stack-086",
+      "type": "mcq",
+      "question": "MongoDB compound index field order guideline?",
+      "difficulty": 2,
+      "tags": [
+        "mongodb"
+      ],
+      "ref": "07-full-stack/stack/data-stores.md",
+      "options": [
+        "ESR: Equality fields, then Sort fields, then Range fields",
+        "Range, Sort, Equality",
+        "Alphabetical",
+        "Most selective field always last"
+      ],
+      "answer": 0,
+      "explanation": "Check with explain()."
+    },
+    {
+      "id": "full-stack-087",
+      "type": "mcq",
+      "question": "When should you embed rather than reference in MongoDB?",
+      "difficulty": 1,
+      "tags": [
+        "mongodb"
+      ],
+      "ref": "07-full-stack/stack/data-stores.md",
+      "options": [
+        "When the related data is unbounded",
+        "When it's shared by many documents and updated independently",
+        "Never",
+        "When the data is read together and bounded in size (e.g. an order's line items)"
+      ],
+      "answer": 3,
+      "explanation": "Documents max out at 16 MB."
+    },
+    {
+      "id": "full-stack-088",
+      "type": "mcq",
+      "question": "Which Redis structure suits a real-time leaderboard?",
+      "difficulty": 1,
+      "tags": [
+        "redis"
+      ],
+      "ref": "07-full-stack/stack/data-stores.md",
+      "options": [
+        "HyperLogLog",
+        "String",
+        "Sorted set (ZADD / ZREVRANGE)",
+        "List"
+      ],
+      "answer": 2,
+      "explanation": "Scores keep members ordered with O(log n) updates."
+    },
+    {
+      "id": "full-stack-089",
+      "type": "mcq",
+      "question": "Redis is used purely as a cache and memory fills up. Typical eviction policy?",
+      "difficulty": 2,
+      "tags": [
+        "redis"
+      ],
+      "ref": "07-full-stack/stack/data-stores.md",
+      "options": [
+        "volatile-ttl only",
+        "No policy; Redis grows forever",
+        "allkeys-lru (or allkeys-lfu)",
+        "noeviction"
+      ],
+      "answer": 2,
+      "explanation": "noeviction makes writes fail when memory is full."
+    },
+    {
+      "id": "full-stack-090",
+      "type": "mcq",
+      "question": "Why is running KEYS * in production Redis dangerous?",
+      "difficulty": 1,
+      "tags": [
+        "redis"
+      ],
+      "ref": "07-full-stack/stack/data-stores.md",
+      "options": [
+        "It's O(n) and blocks the single command thread; use SCAN",
+        "It deletes keys",
+        "It's not a real command",
+        "It disables persistence"
+      ],
+      "answer": 0,
+      "explanation": "Big-key and slow-command issues affect every client."
+    },
+    {
+      "id": "full-stack-091",
+      "type": "mcq",
+      "question": "SQL Server 'parameter sniffing' is:",
+      "difficulty": 3,
+      "tags": [
+        "sqlserver"
+      ],
+      "ref": "07-full-stack/stack/data-stores.md",
+      "options": [
+        "Reusing a plan compiled for one parameter value that performs badly for other values",
+        "Logging parameters for audit",
+        "An index type",
+        "A SQL injection technique"
+      ],
+      "answer": 0,
+      "explanation": "Mitigate with OPTION (RECOMPILE), OPTIMIZE FOR, or Query Store plan forcing."
+    },
+    {
+      "id": "full-stack-092",
+      "type": "card",
+      "question": "Clustered vs nonclustered index in SQL Server?",
+      "difficulty": 2,
+      "tags": [
+        "sqlserver"
+      ],
+      "ref": "07-full-stack/stack/data-stores.md",
+      "answer": "Clustered: defines the table's physical order (one per table, usually the PK; pick narrow, ever-increasing keys). Nonclustered: a separate structure pointing to clustered-key values; add INCLUDE columns to make it covering and avoid key lookups."
+    },
+    {
+      "id": "full-stack-093",
+      "type": "card",
+      "question": "Implement debounce from memory (describe the key lines).",
+      "difficulty": 1,
+      "tags": [
+        "practical",
+        "javascript"
+      ],
+      "ref": "07-full-stack/practical-coding.md",
+      "answer": "Keep a timer in a closure; on each call clearTimeout(timer) then timer = setTimeout(() => fn.apply(this, args), wait). Optionally add cancel(). Preserve `this` and the latest args."
+    },
+    {
+      "id": "full-stack-094",
+      "type": "card",
+      "question": "How does your Promise.all implementation keep results in input order?",
+      "difficulty": 2,
+      "tags": [
+        "practical",
+        "javascript"
+      ],
+      "ref": "07-full-stack/practical-coding.md",
+      "answer": "Pre-allocate a results array, write each value to results[i] using the input index, count remaining completions, resolve when the count hits zero, and reject on the first rejection. Wrap items with Promise.resolve to accept plain values."
+    }
+  ]
+}

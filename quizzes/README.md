@@ -12,6 +12,7 @@ One JSON file per topic. Both quiz front-ends (the `tools/quiz.py` CLI and `quiz
 | `llm-fundamentals.json` | Transformers & LLMs |
 | `stats.json` | Probability & statistics |
 | `behavioral.json` | Behavioral, Amazon LPs, loop strategy |
+| `full-stack.json` | Full-stack: JS/TS, React, Angular, Redux, D3, HTML/CSS, Node.js, .NET, Python, APIs, SQL, security, Azure, AWS, data stores, Docker, Postman |
 
 ## Schema
 
