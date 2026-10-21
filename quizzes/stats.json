@@ -1,0 +1,284 @@
+{
+  "topic": "stats",
+  "title": "Probability & statistics",
+  "questions": [
+    {
+      "id": "stats-001",
+      "type": "mcq",
+      "question": "A test has 99% sensitivity and 95% specificity; prevalence is 1%. P(disease | positive) ≈ ?",
+      "difficulty": 1,
+      "tags": [
+        "bayes"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "≈ 17%",
+        "≈ 95%",
+        "≈ 99%",
+        "≈ 50%"
+      ],
+      "answer": 0,
+      "explanation": "0.99·0.01 / (0.99·0.01 + 0.05·0.99) ≈ 0.0099 / 0.0594 ≈ 16.7%. Base rates dominate."
+    },
+    {
+      "id": "stats-002",
+      "type": "mcq",
+      "question": "A p-value is:",
+      "difficulty": 1,
+      "tags": [
+        "testing"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "The probability the null hypothesis is true",
+        "The effect size",
+        "The probability the result will replicate",
+        "The probability of observing data at least this extreme if the null hypothesis is true"
+      ],
+      "answer": 3,
+      "explanation": "Not P(H₀ | data)."
+    },
+    {
+      "id": "stats-003",
+      "type": "mcq",
+      "question": "Checking an A/B test daily and stopping at the first p < 0.05:",
+      "difficulty": 1,
+      "tags": [
+        "testing"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "Has no effect on error rates",
+        "Is the recommended practice",
+        "Inflates the false-positive rate; use a fixed horizon or sequential testing",
+        "Reduces false positives"
+      ],
+      "answer": 2,
+      "explanation": "Each peek is another chance to cross the threshold by luck."
+    },
+    {
+      "id": "stats-004",
+      "type": "mcq",
+      "question": "Expected number of fair coin flips to get two heads in a row?",
+      "difficulty": 2,
+      "tags": [
+        "puzzles"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "8",
+        "4",
+        "3",
+        "6"
+      ],
+      "answer": 3,
+      "explanation": "Solve E = ½(1 + E) + ¼(2 + E) + ¼·2 → E = 6."
+    },
+    {
+      "id": "stats-005",
+      "type": "mcq",
+      "question": "Monty Hall: should you switch?",
+      "difficulty": 1,
+      "tags": [
+        "puzzles"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "Only if the host chooses randomly",
+        "No difference; 1/2 each",
+        "Yes; switching wins with probability 2/3",
+        "No; staying wins 2/3"
+      ],
+      "answer": 2,
+      "explanation": "Your first pick is right 1/3 of the time; the host's informed reveal concentrates the remaining 2/3 on the other door."
+    },
+    {
+      "id": "stats-006",
+      "type": "mcq",
+      "question": "Uniform random sample of k items from a stream of unknown length:",
+      "difficulty": 2,
+      "tags": [
+        "algorithms"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "Keep the first k items",
+        "Store everything and sample at the end",
+        "Reservoir sampling: keep item i with probability k/i, replacing a random reservoir slot",
+        "Keep every k-th item"
+      ],
+      "answer": 2,
+      "explanation": "One pass, O(k) memory, exactly uniform."
+    },
+    {
+      "id": "stats-007",
+      "type": "mcq",
+      "question": "The Central Limit Theorem says the sample mean of many i.i.d. variables with finite variance is approximately:",
+      "difficulty": 1,
+      "tags": [
+        "distributions"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "Normal with mean μ and variance σ²/n",
+        "Uniform",
+        "Normal with variance σ²",
+        "Poisson"
+      ],
+      "answer": 0,
+      "explanation": "Standard error = σ/√n."
+    },
+    {
+      "id": "stats-008",
+      "type": "mcq",
+      "question": "Poisson(λ) has mean and variance:",
+      "difficulty": 2,
+      "tags": [
+        "distributions"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "Mean λ, variance λ²",
+        "Both equal λ",
+        "Mean 1/λ, variance 1/λ²",
+        "Mean λ, variance √λ"
+      ],
+      "answer": 1,
+      "explanation": "Overdispersion (variance > mean) in count data suggests a negative binomial."
+    },
+    {
+      "id": "stats-009",
+      "type": "mcq",
+      "question": "Unbiased sample variance divides by n − 1 because:",
+      "difficulty": 2,
+      "tags": [
+        "estimation"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "Variance is always overestimated by n",
+        "n − 1 is easier to compute",
+        "The sample mean is estimated from the same data, using up one degree of freedom",
+        "It makes the variance larger for safety"
+      ],
+      "answer": 2,
+      "explanation": "Bessel's correction."
+    },
+    {
+      "id": "stats-010",
+      "type": "mcq",
+      "question": "Minimizing MSE in linear regression is equivalent to maximum likelihood under:",
+      "difficulty": 2,
+      "tags": [
+        "estimation"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "Laplace noise",
+        "Bernoulli outcomes",
+        "Uniform noise",
+        "Gaussian noise"
+      ],
+      "answer": 3,
+      "explanation": "Laplace noise ↔ MAE; Bernoulli ↔ cross-entropy (logistic regression)."
+    },
+    {
+      "id": "stats-011",
+      "type": "mcq",
+      "question": "Testing 20 independent metrics at α = 0.05 with no real effects, expected false positives?",
+      "difficulty": 1,
+      "tags": [
+        "testing"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "1",
+        "0.05",
+        "20",
+        "0"
+      ],
+      "answer": 0,
+      "explanation": "20 × 0.05 = 1. Correct with Bonferroni or Benjamini–Hochberg."
+    },
+    {
+      "id": "stats-012",
+      "type": "mcq",
+      "question": "Simpson's paradox is:",
+      "difficulty": 2,
+      "tags": [
+        "testing"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "Regression to the mean",
+        "Overfitting on small samples",
+        "Correlation implying causation",
+        "A trend in every subgroup that reverses when the groups are combined"
+      ],
+      "answer": 3,
+      "explanation": "Caused by a confounder that affects group sizes; segment your analysis."
+    },
+    {
+      "id": "stats-013",
+      "type": "mcq",
+      "question": "Halving the minimum detectable effect in an A/B test requires roughly how much more sample?",
+      "difficulty": 2,
+      "tags": [
+        "testing"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "options": [
+        "2×",
+        "4×",
+        "√2×",
+        "8×"
+      ],
+      "answer": 1,
+      "explanation": "n ∝ 1/δ²."
+    },
+    {
+      "id": "stats-014",
+      "type": "card",
+      "question": "Generate a fair bit from a biased coin.",
+      "difficulty": 2,
+      "tags": [
+        "puzzles"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "answer": "Flip twice: HT → 0, TH → 1, HH or TT → discard and repeat (von Neumann). Works because P(HT) = P(TH) = p(1−p)."
+    },
+    {
+      "id": "stats-015",
+      "type": "card",
+      "question": "Explain a 95% confidence interval correctly.",
+      "difficulty": 2,
+      "tags": [
+        "testing"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "answer": "If you repeated the experiment many times and built an interval each time, about 95% of those intervals would contain the true parameter. It's not a 95% probability that this specific interval contains it (that's a Bayesian credible interval)."
+    },
+    {
+      "id": "stats-016",
+      "type": "card",
+      "question": "Type I vs type II error, and power?",
+      "difficulty": 1,
+      "tags": [
+        "testing"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "answer": "Type I: false positive (rejecting a true null), rate α. Type II: false negative (missing a real effect), rate β. Power = 1 − β, usually targeted at 0.8."
+    },
+    {
+      "id": "stats-017",
+      "type": "card",
+      "question": "Birthday problem answer for 23 people?",
+      "difficulty": 2,
+      "tags": [
+        "puzzles"
+      ],
+      "ref": "05-ml-fundamentals/probability-and-statistics.md",
+      "answer": "≈ 50.7% chance at least two share a birthday. Compute 1 − Π(365−i)/365 for i = 0..22."
+    }
+  ]
+}

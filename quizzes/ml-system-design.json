@@ -1,0 +1,354 @@
+{
+  "topic": "ml-system-design",
+  "title": "ML system design",
+  "questions": [
+    {
+      "id": "ml-system-design-001",
+      "type": "mcq",
+      "question": "For most production ML problems with user behavior data, how should you split train/validation/test?",
+      "difficulty": 1,
+      "tags": [
+        "data"
+      ],
+      "ref": "03-ml-system-design/framework.md",
+      "options": [
+        "By label value",
+        "Randomly by row",
+        "By time (train on the past, validate on later data)",
+        "Alphabetically by user name"
+      ],
+      "answer": 2,
+      "explanation": "Random splits leak future behavior and overestimate performance."
+    },
+    {
+      "id": "ml-system-design-002",
+      "type": "mcq",
+      "question": "Training-serving skew is best prevented by:",
+      "difficulty": 1,
+      "tags": [
+        "features"
+      ],
+      "ref": "03-ml-system-design/framework.md",
+      "options": [
+        "Using a deeper model",
+        "Retraining more often",
+        "Training with a larger batch size",
+        "Computing features from one shared definition (feature store) for both training and serving, with point-in-time correct joins"
+      ],
+      "answer": 3,
+      "explanation": "Separate code paths for offline and online features drift apart silently."
+    },
+    {
+      "id": "ml-system-design-003",
+      "type": "mcq",
+      "question": "In a recommender funnel, what's the job of candidate generation?",
+      "difficulty": 1,
+      "tags": [
+        "ranking"
+      ],
+      "ref": "03-ml-system-design/framework.md",
+      "options": [
+        "Calibrate click probabilities",
+        "High precision on the final 10 items",
+        "Enforce diversity rules",
+        "High recall: cheaply narrow millions/billions of items to ~1,000s"
+      ],
+      "answer": 3,
+      "explanation": "Two-tower ANN, co-occurrence, trending, rules; then a heavier ranker focuses on precision."
+    },
+    {
+      "id": "ml-system-design-004",
+      "type": "mcq",
+      "question": "Why are ads CTR predictions required to be well calibrated?",
+      "difficulty": 2,
+      "tags": [
+        "ads"
+      ],
+      "ref": "03-ml-system-design/case-studies.md",
+      "options": [
+        "Calibration reduces training time",
+        "Users see the probabilities",
+        "The auction multiplies pCTR by the bid, so mis-calibration misprices ads",
+        "Calibration improves AUC"
+      ],
+      "answer": 2,
+      "explanation": "AUC only measures ranking; the auction needs correct absolute probabilities. Recalibrate after negative down-sampling."
+    },
+    {
+      "id": "ml-system-design-005",
+      "type": "mcq",
+      "question": "Fraud detection with 0.1% positives. Which offline metric is more informative?",
+      "difficulty": 1,
+      "tags": [
+        "metrics"
+      ],
+      "ref": "03-ml-system-design/metrics-and-experimentation.md",
+      "options": [
+        "Accuracy",
+        "PR-AUC (or recall at a fixed false-positive rate)",
+        "Mean squared error",
+        "ROC-AUC only"
+      ],
+      "answer": 1,
+      "explanation": "Accuracy is 99.9% for 'never fraud'; ROC-AUC can look great while precision is poor."
+    },
+    {
+      "id": "ml-system-design-006",
+      "type": "mcq",
+      "question": "A ranking model improved offline NDCG but online engagement fell. Most likely explanation?",
+      "difficulty": 2,
+      "tags": [
+        "metrics"
+      ],
+      "ref": "03-ml-system-design/metrics-and-experimentation.md",
+      "options": [
+        "The A/B test is always wrong",
+        "The offline metric/labels don't reflect the online goal (proxy mismatch, position bias, feedback loops)",
+        "The model is too small",
+        "NDCG is computed incorrectly by definition"
+      ],
+      "answer": 1,
+      "explanation": "Investigate label choice, logged-data bias, segments, and novelty effects; consider interleaving or counterfactual evaluation."
+    },
+    {
+      "id": "ml-system-design-007",
+      "type": "mcq",
+      "question": "Interleaving experiments are mainly used to:",
+      "difficulty": 2,
+      "tags": [
+        "experimentation"
+      ],
+      "ref": "03-ml-system-design/metrics-and-experimentation.md",
+      "options": [
+        "Split traffic by country",
+        "Train models faster",
+        "Detect data drift",
+        "Compare two rankers with far more sensitivity than a standard A/B test"
+      ],
+      "answer": 3,
+      "explanation": "Blend both rankers' results in one list and attribute clicks; needs much less traffic."
+    },
+    {
+      "id": "ml-system-design-008",
+      "type": "mcq",
+      "question": "Sample ratio mismatch (SRM) in an A/B test means:",
+      "difficulty": 2,
+      "tags": [
+        "experimentation"
+      ],
+      "ref": "03-ml-system-design/metrics-and-experimentation.md",
+      "options": [
+        "The test has high power",
+        "The observed traffic split differs significantly from the intended split, so results are untrustworthy",
+        "The treatment effect is large",
+        "Users saw both variants on purpose"
+      ],
+      "answer": 1,
+      "explanation": "Check SRM first; causes include bucketing bugs, bot filtering, and redirects."
+    },
+    {
+      "id": "ml-system-design-009",
+      "type": "mcq",
+      "question": "CUPED is used to:",
+      "difficulty": 3,
+      "tags": [
+        "experimentation"
+      ],
+      "ref": "03-ml-system-design/metrics-and-experimentation.md",
+      "options": [
+        "Reduce variance in A/B tests using pre-experiment covariates",
+        "Choose the randomization unit",
+        "Calibrate probabilities",
+        "Detect fraud"
+      ],
+      "answer": 0,
+      "explanation": "Lower variance means smaller samples or faster decisions."
+    },
+    {
+      "id": "ml-system-design-010",
+      "type": "mcq",
+      "question": "Why might you randomize by cluster (e.g. city) instead of by user?",
+      "difficulty": 3,
+      "tags": [
+        "experimentation"
+      ],
+      "ref": "03-ml-system-design/metrics-and-experimentation.md",
+      "options": [
+        "To reduce cost",
+        "Because users can't be identified",
+        "Network or marketplace effects make treated and control users interfere",
+        "To increase sample size"
+      ],
+      "answer": 2,
+      "explanation": "Ride-sharing or social features leak between users; switchback or cluster designs reduce interference."
+    },
+    {
+      "id": "ml-system-design-011",
+      "type": "mcq",
+      "question": "For video recommendations, why optimize for watch time / satisfaction rather than clicks?",
+      "difficulty": 1,
+      "tags": [
+        "labels"
+      ],
+      "ref": "03-ml-system-design/case-studies.md",
+      "options": [
+        "Watch time is easier to compute",
+        "Clicks reward clickbait; watch time and satisfaction signals reflect value",
+        "Clicks are always too sparse",
+        "Clicks are not logged"
+      ],
+      "answer": 1,
+      "explanation": "Pick labels that align with long-term goals; add negative signals (hides, dislikes)."
+    },
+    {
+      "id": "ml-system-design-012",
+      "type": "mcq",
+      "question": "You down-sample negatives 10× for CTR training. What must you do before serving?",
+      "difficulty": 3,
+      "tags": [
+        "ads",
+        "calibration"
+      ],
+      "ref": "03-ml-system-design/case-studies.md",
+      "options": [
+        "Nothing",
+        "Recalibrate the predicted probabilities to the true base rate",
+        "Multiply all features by 10",
+        "Down-sample at serving time too"
+      ],
+      "answer": 1,
+      "explanation": "Down-sampling inflates the predicted positive rate; correct it with p' = p / (p + (1 − p)/w)."
+    },
+    {
+      "id": "ml-system-design-013",
+      "type": "mcq",
+      "question": "Best default model family for tabular fraud features?",
+      "difficulty": 1,
+      "tags": [
+        "models"
+      ],
+      "ref": "03-ml-system-design/case-studies.md",
+      "options": [
+        "A transformer over raw rows",
+        "A CNN",
+        "Gradient-boosted trees (XGBoost/LightGBM)",
+        "k-means"
+      ],
+      "answer": 2,
+      "explanation": "Strong on heterogeneous tabular data, fast, explainable with SHAP; add graph features for fraud rings."
+    },
+    {
+      "id": "ml-system-design-014",
+      "type": "mcq",
+      "question": "Position bias in click logs is handled by:",
+      "difficulty": 2,
+      "tags": [
+        "ranking"
+      ],
+      "ref": "03-ml-system-design/framework.md",
+      "options": [
+        "Only training on the first result",
+        "Ignoring it",
+        "Randomizing the UI for all users permanently",
+        "Using position as a training feature (fixed at serving) or inverse propensity weighting with exploration data"
+      ],
+      "answer": 3,
+      "explanation": "Top results get clicks just for being on top."
+    },
+    {
+      "id": "ml-system-design-015",
+      "type": "mcq",
+      "question": "ETA prediction where being late is worse than being early. Loss?",
+      "difficulty": 2,
+      "tags": [
+        "models"
+      ],
+      "ref": "03-ml-system-design/case-studies.md",
+      "options": [
+        "Hinge loss",
+        "MSE",
+        "Log loss",
+        "Quantile (pinball) loss at a higher quantile"
+      ],
+      "answer": 3,
+      "explanation": "Asymmetric costs call for quantile regression (e.g. predict P70 or P80)."
+    },
+    {
+      "id": "ml-system-design-016",
+      "type": "card",
+      "question": "Recite the 7-step ML system design framework.",
+      "difficulty": 1,
+      "tags": [
+        "framework"
+      ],
+      "ref": "03-ml-system-design/framework.md",
+      "answer": "1) Business goal + constraints + baseline. 2) ML framing (task, label, proxy). 3) Data (sources, labels, splits, leakage). 4) Features + model (simple → complex). 5) Serving architecture (funnel, online/batch, feature store, latency budget). 6) Evaluation (offline ↔ online, A/B, guardrails). 7) Deploy + monitor (shadow, canary, drift, retraining, feedback loops)."
+    },
+    {
+      "id": "ml-system-design-017",
+      "type": "card",
+      "question": "Name 5 things to monitor for a production ML model.",
+      "difficulty": 1,
+      "tags": [
+        "monitoring"
+      ],
+      "ref": "03-ml-system-design/metrics-and-experimentation.md",
+      "answer": "Input data drift (PSI/KL), prediction drift, data quality (nulls, schema, freshness), performance once labels arrive (sliced by segment), latency/throughput/errors, business KPIs; plus alerts and retraining triggers."
+    },
+    {
+      "id": "ml-system-design-018",
+      "type": "card",
+      "question": "How do you handle cold start for new items and new users?",
+      "difficulty": 2,
+      "tags": [
+        "recsys"
+      ],
+      "ref": "03-ml-system-design/framework.md",
+      "answer": "Items: content features/embeddings, creator priors, exploration slots/boosts. Users: popularity and context (geo, device, referral), onboarding questions, fast session-based updates."
+    },
+    {
+      "id": "ml-system-design-019",
+      "type": "card",
+      "question": "A/B test sample size rule of thumb?",
+      "difficulty": 2,
+      "tags": [
+        "experimentation"
+      ],
+      "ref": "03-ml-system-design/metrics-and-experimentation.md",
+      "answer": "n per arm ≈ 16·σ²/δ² for α = 0.05 (two-sided) and 80% power, where δ is the minimum detectable effect. Halving the MDE needs 4× the sample."
+    },
+    {
+      "id": "ml-system-design-020",
+      "type": "card",
+      "question": "What's a feedback loop in recommender systems, and how do you mitigate it?",
+      "difficulty": 2,
+      "tags": [
+        "recsys"
+      ],
+      "ref": "03-ml-system-design/framework.md",
+      "answer": "The model decides what users see, which decides what data you collect, which reinforces the model (popularity bias, filter bubbles). Mitigate with exploration traffic (randomized slots), inverse propensity weighting, diversity constraints, and logging propensities."
+    },
+    {
+      "id": "ml-system-design-021",
+      "type": "card",
+      "question": "Fraud system: what decisions and thresholds would you design?",
+      "difficulty": 2,
+      "tags": [
+        "case-study"
+      ],
+      "ref": "03-ml-system-design/case-studies.md",
+      "answer": "Real-time score (< 100 ms) → approve / step-up authentication / manual review / decline, with thresholds tuned to review-queue capacity and the cost of fraud vs false declines; rules engine for known patterns; label delay handling; frequent retraining with drift monitoring."
+    },
+    {
+      "id": "ml-system-design-022",
+      "type": "card",
+      "question": "Harmful content: what is 'prevalence' and why measure it?",
+      "difficulty": 3,
+      "tags": [
+        "case-study"
+      ],
+      "ref": "03-ml-system-design/case-studies.md",
+      "answer": "The fraction of views containing violating content, measured by human-labeling a random sample of impressions. It measures user exposure, which classifier precision/recall alone can't."
+    }
+  ]
+}

@@ -1,0 +1,610 @@
+{
+  "topic": "coding",
+  "title": "Coding patterns & complexity",
+  "questions": [
+    {
+      "id": "coding-001",
+      "type": "mcq",
+      "question": "'Number of subarrays whose sum equals K' with negative numbers allowed. Which pattern?",
+      "difficulty": 2,
+      "tags": [
+        "prefix-sum"
+      ],
+      "ref": "01-coding/patterns/arrays-and-strings.md",
+      "options": [
+        "Sliding window",
+        "Binary search",
+        "Monotonic stack",
+        "Prefix sums + hash map of prefix-sum counts"
+      ],
+      "answer": 3,
+      "explanation": "Negatives break sliding-window monotonicity. Count prefix[j] − K occurrences seen so far; seed the map with {0: 1}."
+    },
+    {
+      "id": "coding-002",
+      "type": "mcq",
+      "question": "'Longest substring with at most K distinct characters'. Which pattern?",
+      "difficulty": 1,
+      "tags": [
+        "sliding-window"
+      ],
+      "ref": "01-coding/patterns/arrays-and-strings.md",
+      "options": [
+        "Union-find",
+        "Backtracking",
+        "Prefix sums",
+        "Sliding window with a character-count map"
+      ],
+      "answer": 3,
+      "explanation": "Expand right, shrink left while the window has > K distinct; O(n)."
+    },
+    {
+      "id": "coding-003",
+      "type": "mcq",
+      "question": "For each day, find how many days until a warmer temperature. Which pattern gives O(n)?",
+      "difficulty": 1,
+      "tags": [
+        "monotonic-stack"
+      ],
+      "ref": "01-coding/patterns/stacks-queues-linked-lists.md",
+      "options": [
+        "Binary search on each suffix",
+        "Two pointers from both ends",
+        "Monotonic (decreasing) stack of indices",
+        "Min-heap"
+      ],
+      "answer": 2,
+      "explanation": "Each index is pushed and popped once; pop while the current temperature is warmer."
+    },
+    {
+      "id": "coding-004",
+      "type": "mcq",
+      "question": "'Minimum ship capacity to ship all packages within D days'. Which pattern?",
+      "difficulty": 2,
+      "tags": [
+        "binary-search"
+      ],
+      "ref": "01-coding/patterns/binary-search.md",
+      "options": [
+        "BFS",
+        "Binary search on the answer with a feasibility check",
+        "Dynamic programming over days",
+        "Greedy sort descending"
+      ],
+      "answer": 1,
+      "explanation": "Feasibility is monotonic in capacity: if C works, C+1 works. Search between max(weight) and sum(weights)."
+    },
+    {
+      "id": "coding-005",
+      "type": "mcq",
+      "question": "Shortest path in an unweighted grid. Which algorithm?",
+      "difficulty": 1,
+      "tags": [
+        "graphs"
+      ],
+      "ref": "01-coding/patterns/graphs.md",
+      "options": [
+        "BFS",
+        "Dijkstra",
+        "DFS",
+        "Bellman-Ford"
+      ],
+      "answer": 0,
+      "explanation": "BFS explores by distance layers, so the first time you reach the target is the shortest path. O(V+E)."
+    },
+    {
+      "id": "coding-006",
+      "type": "mcq",
+      "question": "Shortest path with non-negative edge weights. Which algorithm?",
+      "difficulty": 1,
+      "tags": [
+        "graphs"
+      ],
+      "ref": "01-coding/patterns/graphs.md",
+      "options": [
+        "Dijkstra with a min-heap",
+        "Topological sort",
+        "BFS",
+        "Floyd–Warshall for a single source"
+      ],
+      "answer": 0,
+      "explanation": "O(E log V). Negative weights need Bellman-Ford."
+    },
+    {
+      "id": "coding-007",
+      "type": "mcq",
+      "question": "'Can you finish all courses given prerequisites?' Which approach?",
+      "difficulty": 1,
+      "tags": [
+        "graphs"
+      ],
+      "ref": "01-coding/patterns/graphs.md",
+      "options": [
+        "Binary search",
+        "Topological sort (Kahn's algorithm) and check for a cycle",
+        "Dijkstra",
+        "Union-find on the prerequisites"
+      ],
+      "answer": 1,
+      "explanation": "If the topological order contains fewer than n nodes, there's a cycle, so it's impossible."
+    },
+    {
+      "id": "coding-008",
+      "type": "mcq",
+      "question": "Detect whether adding an edge creates a cycle in an undirected graph, processing edges one by one. Best structure?",
+      "difficulty": 1,
+      "tags": [
+        "graphs",
+        "union-find"
+      ],
+      "ref": "01-coding/patterns/graphs.md",
+      "options": [
+        "Trie",
+        "Min-heap",
+        "Monotonic queue",
+        "Union-find (disjoint set union)"
+      ],
+      "answer": 3,
+      "explanation": "If both endpoints already share a root, the edge is redundant. Near O(1) per operation with path compression + union by rank."
+    },
+    {
+      "id": "coding-009",
+      "type": "mcq",
+      "question": "Find the K largest elements of a stream of n numbers with O(n log k). Which structure?",
+      "difficulty": 1,
+      "tags": [
+        "heap"
+      ],
+      "ref": "01-coding/patterns/heaps-intervals-greedy.md",
+      "options": [
+        "A hash set",
+        "A max-heap of all n elements",
+        "A min-heap of size K",
+        "A sorted array with insertion"
+      ],
+      "answer": 2,
+      "explanation": "Keep the K largest seen; push, and pop the smallest when the size exceeds K."
+    },
+    {
+      "id": "coding-010",
+      "type": "mcq",
+      "question": "Running median of a data stream. Which design?",
+      "difficulty": 2,
+      "tags": [
+        "heap"
+      ],
+      "ref": "01-coding/patterns/heaps-intervals-greedy.md",
+      "options": [
+        "A trie",
+        "One sorted list with binary insertion (O(n) insert)",
+        "A single min-heap",
+        "Two heaps: a max-heap for the lower half and a min-heap for the upper half"
+      ],
+      "answer": 3,
+      "explanation": "Rebalance so sizes differ by at most 1; the median is a top or the average of the tops. O(log n) add, O(1) median."
+    },
+    {
+      "id": "coding-011",
+      "type": "mcq",
+      "question": "Minimum number of meeting rooms for a set of intervals. Approach?",
+      "difficulty": 1,
+      "tags": [
+        "intervals"
+      ],
+      "ref": "01-coding/patterns/heaps-intervals-greedy.md",
+      "options": [
+        "DP over intervals",
+        "Sort starts and ends separately (or a min-heap of end times) and sweep",
+        "Union-find",
+        "BFS"
+      ],
+      "answer": 1,
+      "explanation": "Count overlapping intervals at any time; O(n log n)."
+    },
+    {
+      "id": "coding-012",
+      "type": "mcq",
+      "question": "Minimum intervals to remove so the rest don't overlap. Greedy rule?",
+      "difficulty": 2,
+      "tags": [
+        "greedy",
+        "intervals"
+      ],
+      "ref": "01-coding/patterns/heaps-intervals-greedy.md",
+      "options": [
+        "Remove the interval with the most overlaps first",
+        "Sort by start time; keep the longest",
+        "Sort by length; keep the shortest",
+        "Sort by end time; keep the interval that ends earliest"
+      ],
+      "answer": 3,
+      "explanation": "Ending earliest leaves the most room for the rest (exchange argument)."
+    },
+    {
+      "id": "coding-013",
+      "type": "mcq",
+      "question": "Generate all subsets of n distinct numbers. Time complexity?",
+      "difficulty": 1,
+      "tags": [
+        "backtracking",
+        "complexity"
+      ],
+      "ref": "01-coding/patterns/backtracking.md",
+      "options": [
+        "O(n · 2^n)",
+        "O(2^n) with no extra factor",
+        "O(n²)",
+        "O(n!)"
+      ],
+      "answer": 0,
+      "explanation": "2^n subsets, each up to n long to copy."
+    },
+    {
+      "id": "coding-014",
+      "type": "mcq",
+      "question": "In 0/1 knapsack with a 1-D dp array, why iterate capacity backwards?",
+      "difficulty": 2,
+      "tags": [
+        "dp"
+      ],
+      "ref": "01-coding/patterns/dynamic-programming.md",
+      "options": [
+        "Iterating forwards is also correct for 0/1 knapsack",
+        "So each item is used at most once (dp[s − w] still refers to the previous item's row)",
+        "Because Python lists are reversed",
+        "To make it faster"
+      ],
+      "answer": 1,
+      "explanation": "Forward iteration lets an item be reused, which is the unbounded knapsack (coin change)."
+    },
+    {
+      "id": "coding-015",
+      "type": "mcq",
+      "question": "Best known complexity for Longest Increasing Subsequence?",
+      "difficulty": 2,
+      "tags": [
+        "dp",
+        "binary-search"
+      ],
+      "ref": "01-coding/patterns/dynamic-programming.md",
+      "options": [
+        "O(n)",
+        "O(n²) is optimal",
+        "O(n log n) with patience sorting (tails array + binary search)",
+        "O(2^n)"
+      ],
+      "answer": 2,
+      "explanation": "tails[k] = smallest tail of an increasing subsequence of length k+1; bisect_left each element."
+    },
+    {
+      "id": "coding-016",
+      "type": "mcq",
+      "question": "Edit distance between strings of length m and n. Complexity?",
+      "difficulty": 1,
+      "tags": [
+        "dp"
+      ],
+      "ref": "01-coding/patterns/dynamic-programming.md",
+      "options": [
+        "O(2^(m+n))",
+        "O(m·n) time, reducible to O(min(m, n)) space",
+        "O(m + n)",
+        "O(m·n·log n)"
+      ],
+      "answer": 1,
+      "explanation": "dp[i][j] from delete, insert, replace/match; only the previous row is needed."
+    },
+    {
+      "id": "coding-017",
+      "type": "mcq",
+      "question": "Design a cache with O(1) get and put that evicts the least recently used item. Structures?",
+      "difficulty": 1,
+      "tags": [
+        "design"
+      ],
+      "ref": "01-coding/patterns/design-data-structures.md",
+      "options": [
+        "Balanced BST",
+        "Array with linear scan",
+        "Min-heap keyed by access time",
+        "Hash map + doubly linked list"
+      ],
+      "answer": 3,
+      "explanation": "The map gives O(1) lookup; the list gives O(1) move-to-front and removal of the tail."
+    },
+    {
+      "id": "coding-018",
+      "type": "mcq",
+      "question": "Which rate limiter allows short bursts while enforcing an average rate, with O(1) memory?",
+      "difficulty": 1,
+      "tags": [
+        "design"
+      ],
+      "ref": "01-coding/patterns/design-data-structures.md",
+      "options": [
+        "Fixed window counter with no expiry",
+        "Sliding window log",
+        "Leaky bucket with an unbounded queue",
+        "Token bucket"
+      ],
+      "answer": 3,
+      "explanation": "Tokens refill at rate r up to capacity b; each request spends a token."
+    },
+    {
+      "id": "coding-019",
+      "type": "mcq",
+      "question": "Validate a BST correctly. Key idea?",
+      "difficulty": 1,
+      "tags": [
+        "trees"
+      ],
+      "ref": "01-coding/patterns/trees-and-tries.md",
+      "options": [
+        "Check the tree is balanced",
+        "Check node.left.val < node.val < node.right.val at each node only",
+        "Pass (low, high) bounds down the recursion",
+        "BFS and compare siblings"
+      ],
+      "answer": 2,
+      "explanation": "Local child checks miss violations deeper in the tree (a right-subtree node smaller than an ancestor)."
+    },
+    {
+      "id": "coding-020",
+      "type": "mcq",
+      "question": "Autocomplete over a dictionary of words by prefix. Best structure?",
+      "difficulty": 1,
+      "tags": [
+        "trie"
+      ],
+      "ref": "01-coding/patterns/trees-and-tries.md",
+      "options": [
+        "Min-heap",
+        "Bloom filter",
+        "Trie",
+        "Union-find"
+      ],
+      "answer": 2,
+      "explanation": "Walk the prefix in O(L), then enumerate descendants (store top-K at nodes for speed)."
+    },
+    {
+      "id": "coding-021",
+      "type": "mcq",
+      "question": "Floyd's cycle detection: after slow and fast pointers meet, how do you find the cycle start?",
+      "difficulty": 2,
+      "tags": [
+        "linked-list"
+      ],
+      "ref": "01-coding/patterns/stacks-queues-linked-lists.md",
+      "options": [
+        "Reset one pointer to head; move both one step at a time; they meet at the cycle start",
+        "Reverse the list",
+        "The meeting point is the cycle start",
+        "Count nodes and divide by 2"
+      ],
+      "answer": 0,
+      "explanation": "The distance from head to start equals the distance from the meeting point to start (mod cycle length)."
+    },
+    {
+      "id": "coding-022",
+      "type": "mcq",
+      "question": "Python: which operation is O(n)?",
+      "difficulty": 1,
+      "tags": [
+        "python"
+      ],
+      "ref": "01-coding/python-for-interviews.md",
+      "options": [
+        "list.append(x)",
+        "dict lookup",
+        "list.pop(0)",
+        "deque.popleft()"
+      ],
+      "answer": 2,
+      "explanation": "Popping from the front shifts every element; use collections.deque."
+    },
+    {
+      "id": "coding-023",
+      "type": "mcq",
+      "question": "n ≤ 20 and you need to try all subsets with DP state. Feasible complexity?",
+      "difficulty": 2,
+      "tags": [
+        "complexity"
+      ],
+      "ref": "01-coding/complexity-cheatsheet.md",
+      "options": [
+        "O(n!) is fine",
+        "Only O(n²)",
+        "O(n · 2^n) (bitmask DP)",
+        "O(2^(2^n))"
+      ],
+      "answer": 2,
+      "explanation": "2^20 ≈ 10^6 states × 20 ≈ 2×10^7 operations: fine."
+    },
+    {
+      "id": "coding-024",
+      "type": "mcq",
+      "question": "n = 10^6. Which complexity is generally acceptable?",
+      "difficulty": 1,
+      "tags": [
+        "complexity"
+      ],
+      "ref": "01-coding/complexity-cheatsheet.md",
+      "options": [
+        "O(n log n)",
+        "O(n³)",
+        "O(n²)",
+        "O(2^n)"
+      ],
+      "answer": 0,
+      "explanation": "10^6 × 20 ≈ 2×10^7 operations; O(n²) = 10^12 is far too slow."
+    },
+    {
+      "id": "coding-025",
+      "type": "mcq",
+      "question": "Python heapq is a…",
+      "difficulty": 1,
+      "tags": [
+        "python",
+        "heap"
+      ],
+      "ref": "01-coding/python-for-interviews.md",
+      "options": [
+        "Max-heap",
+        "Balanced BST",
+        "Min-heap (negate values for a max-heap)",
+        "Fibonacci heap"
+      ],
+      "answer": 2,
+      "explanation": "Push tuples (priority, tiebreak, item) so items are never compared directly."
+    },
+    {
+      "id": "coding-026",
+      "type": "mcq",
+      "question": "What's wrong with grid = [[0]*cols]*rows in Python?",
+      "difficulty": 1,
+      "tags": [
+        "python"
+      ],
+      "ref": "01-coding/python-for-interviews.md",
+      "options": [
+        "It's O(n³) to create",
+        "All rows are the same list object, so writing one cell changes every row",
+        "It creates a tuple, which is immutable",
+        "Nothing"
+      ],
+      "answer": 1,
+      "explanation": "Use [[0]*cols for _ in range(rows)]."
+    },
+    {
+      "id": "coding-027",
+      "type": "mcq",
+      "question": "Search in a rotated sorted array in O(log n). Key observation?",
+      "difficulty": 2,
+      "tags": [
+        "binary-search"
+      ],
+      "ref": "01-coding/patterns/binary-search.md",
+      "options": [
+        "Binary search doesn't work on rotated arrays",
+        "The array's minimum is always at index 0",
+        "You must first un-rotate the array in O(n)",
+        "At every step, at least one half (lo..mid or mid..hi) is sorted"
+      ],
+      "answer": 3,
+      "explanation": "Check whether the target lies within the sorted half; recurse into the correct side."
+    },
+    {
+      "id": "coding-028",
+      "type": "mcq",
+      "question": "Exactly K distinct elements in subarrays: classic trick?",
+      "difficulty": 3,
+      "tags": [
+        "sliding-window"
+      ],
+      "ref": "01-coding/patterns/arrays-and-strings.md",
+      "options": [
+        "Bitmask DP",
+        "Use a heap of size K",
+        "exactly(K) = atMost(K) − atMost(K − 1)",
+        "Sort and two pointers"
+      ],
+      "answer": 2,
+      "explanation": "Sliding window solves 'at most' cleanly; subtract to get 'exactly'."
+    },
+    {
+      "id": "coding-029",
+      "type": "mcq",
+      "question": "Maximum of every window of size k in O(n). Structure?",
+      "difficulty": 2,
+      "tags": [
+        "monotonic-queue"
+      ],
+      "ref": "01-coding/patterns/stacks-queues-linked-lists.md",
+      "options": [
+        "Monotonic deque of indices (values decreasing)",
+        "Prefix maxima",
+        "Sort each window",
+        "Min-heap with lazy deletion only"
+      ],
+      "answer": 0,
+      "explanation": "Pop smaller values from the back, expired indices from the front; the front is the max."
+    },
+    {
+      "id": "coding-030",
+      "type": "card",
+      "question": "Say the 6-step coding interview script.",
+      "difficulty": 1,
+      "tags": [
+        "process"
+      ],
+      "ref": "01-coding/README.md",
+      "answer": "1) Restate + clarify (sizes, edge cases). 2) Brute force + complexity. 3) Name the pattern + target complexity; get buy-in. 4) Write clean code with helpers. 5) Dry-run by hand + edge cases. 6) Final complexity + a follow-up (streaming, distributed, memory)."
+    },
+    {
+      "id": "coding-031",
+      "type": "card",
+      "question": "Recognition cues for dynamic programming?",
+      "difficulty": 1,
+      "tags": [
+        "dp"
+      ],
+      "ref": "01-coding/patterns/dynamic-programming.md",
+      "answer": "'Number of ways', 'min/max cost', 'is it possible', choices at each step, and a brute-force recursion that repeats the same arguments (overlapping subproblems) with optimal substructure."
+    },
+    {
+      "id": "coding-032",
+      "type": "card",
+      "question": "4-step DP recipe?",
+      "difficulty": 1,
+      "tags": [
+        "dp"
+      ],
+      "ref": "01-coding/patterns/dynamic-programming.md",
+      "answer": "1) Define the state in words. 2) Transition from smaller states. 3) Base cases. 4) Iteration order + where the answer is; then optimize space."
+    },
+    {
+      "id": "coding-033",
+      "type": "card",
+      "question": "When does sliding window NOT work for subarray sums?",
+      "difficulty": 2,
+      "tags": [
+        "sliding-window"
+      ],
+      "ref": "01-coding/patterns/arrays-and-strings.md",
+      "answer": "When numbers can be negative: growing the window doesn't monotonically increase the sum, so you can't decide when to shrink. Use prefix sums + hash map instead."
+    },
+    {
+      "id": "coding-034",
+      "type": "card",
+      "question": "How does Alien Dictionary build its graph, and what's the tricky edge case?",
+      "difficulty": 3,
+      "tags": [
+        "graphs"
+      ],
+      "ref": "01-coding/patterns/graphs.md",
+      "answer": "Compare adjacent words; the first differing characters give an edge (a → b). Topologically sort. Edge case: if a word is followed by its own strict prefix (e.g. 'abc' then 'ab'), the order is invalid; also detect cycles."
+    },
+    {
+      "id": "coding-035",
+      "type": "card",
+      "question": "Follow-ups for an LRU cache in a practical round?",
+      "difficulty": 2,
+      "tags": [
+        "design"
+      ],
+      "ref": "01-coding/patterns/design-data-structures.md",
+      "answer": "Thread safety (one lock or striped locks), TTL (expiry + lazy check + heap sweep), metrics (hit rate), distributed cache (consistent hashing, each node runs its own LRU), memory-bounded by bytes instead of count."
+    },
+    {
+      "id": "coding-036",
+      "type": "card",
+      "question": "How do you implement nested transactions (begin/commit/rollback) for a KV store?",
+      "difficulty": 3,
+      "tags": [
+        "design"
+      ],
+      "ref": "01-coding/patterns/design-data-structures.md",
+      "answer": "Keep a stack of change logs. On set/delete inside a transaction, record the key's previous value (or a 'didn't exist' tombstone) in the top log if not already recorded. Rollback restores from the top log and pops it. Commit merges the top log into the one below (keeping the older original values), or discards it at the outermost level."
+    }
+  ]
+}

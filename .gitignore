@@ -1,0 +1,8 @@
+# quiz progress (commit it if you want progress to follow you across machines)
+.progress.json
+.progress.json.bak
+.progress.tmp
+__pycache__/
+*.pyc
+.DS_Store
+.venv/

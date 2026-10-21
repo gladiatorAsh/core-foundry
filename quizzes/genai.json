@@ -1,0 +1,1028 @@
+{
+  "topic": "genai",
+  "title": "GenAI & LLM system design",
+  "questions": [
+    {
+      "id": "genai-001",
+      "type": "mcq",
+      "question": "A RAG assistant often fails on queries containing exact error codes like 'ERR_4012', even though the right doc is indexed. Best first fix?",
+      "difficulty": 2,
+      "tags": [
+        "rag",
+        "retrieval"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "Increase the embedding dimension",
+        "Fine-tune the LLM on the error-code docs",
+        "Raise the LLM temperature",
+        "Add keyword (BM25) retrieval and fuse it with vector results (hybrid search)"
+      ],
+      "answer": 3,
+      "explanation": "Dense embeddings blur rare exact tokens like IDs and codes. BM25 matches them exactly; Reciprocal Rank Fusion combines both lists."
+    },
+    {
+      "id": "genai-002",
+      "type": "mcq",
+      "question": "What does Reciprocal Rank Fusion (RRF) use to combine result lists?",
+      "difficulty": 2,
+      "tags": [
+        "rag",
+        "retrieval"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "The raw similarity scores, normalized to [0,1]",
+        "Only each document's rank in each list: score = Σ 1/(k + rank)",
+        "A learned weight per retriever",
+        "The LLM's judgment of relevance"
+      ],
+      "answer": 1,
+      "explanation": "RRF ignores incomparable raw scores (BM25 vs cosine) and uses ranks, with k ≈ 60 damping the top ranks."
+    },
+    {
+      "id": "genai-003",
+      "type": "mcq",
+      "question": "Where should document-level access control be enforced in an enterprise RAG system?",
+      "difficulty": 1,
+      "tags": [
+        "rag",
+        "security"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "After generation, by scanning the answer for restricted terms",
+        "In the system prompt, telling the model not to reveal restricted content",
+        "Only in the UI layer",
+        "As a security filter inside the retrieval query, using ACLs captured at ingestion"
+      ],
+      "answer": 3,
+      "explanation": "Prompts are not a security boundary. If a chunk the user can't see reaches the model, it can leak. Filter at retrieval (pre-filter)."
+    },
+    {
+      "id": "genai-004",
+      "type": "mcq",
+      "question": "What is the main benefit of a cross-encoder re-ranker over the initial bi-encoder retrieval?",
+      "difficulty": 2,
+      "tags": [
+        "rag",
+        "reranking"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "It lets you precompute document vectors for faster search",
+        "It jointly encodes query and document, giving much more accurate relevance scores for the top candidates",
+        "It removes the need for chunking",
+        "It reduces the number of tokens sent to the LLM to zero"
+      ],
+      "answer": 1,
+      "explanation": "Cross-encoders see query and doc together (full attention between them) but can't be precomputed, so they're used on the top ~50 results only."
+    },
+    {
+      "id": "genai-005",
+      "type": "mcq",
+      "question": "You switch to a new embedding model. What must happen to the vector index?",
+      "difficulty": 1,
+      "tags": [
+        "rag",
+        "operations"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "Nothing: vectors from different models are compatible",
+        "Normalize the old vectors and keep them",
+        "Re-embed the whole corpus with the new model (e.g. build a new index and cut over blue/green)",
+        "Only re-embed documents added after the switch"
+      ],
+      "answer": 2,
+      "explanation": "Embedding spaces from different models aren't comparable. Queries and documents must use the same model."
+    },
+    {
+      "id": "genai-006",
+      "type": "mcq",
+      "question": "'Lost in the middle' refers to:",
+      "difficulty": 2,
+      "tags": [
+        "rag",
+        "llm"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "Chunks being dropped by the vector index during compaction",
+        "LLMs using information at the start and end of a long context better than information in the middle",
+        "Tokens truncated from the middle of a prompt by the API",
+        "Retrieval recall dropping for mid-length documents"
+      ],
+      "answer": 1,
+      "explanation": "Order retrieved chunks so the most relevant are first (or at the edges), and keep context focused."
+    },
+    {
+      "id": "genai-007",
+      "type": "mcq",
+      "question": "What does the 'parent–child' (small-to-big) chunking strategy do?",
+      "difficulty": 2,
+      "tags": [
+        "rag",
+        "chunking"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "Embeds small chunks for precise matching but returns the larger parent section to the LLM",
+        "Indexes only document titles",
+        "Uses one embedding per document and one per sentence, averaged",
+        "Splits documents only at the paragraph level"
+      ],
+      "answer": 0,
+      "explanation": "Small chunks match precisely; parents give the model enough surrounding context to answer."
+    },
+    {
+      "id": "genai-008",
+      "type": "mcq",
+      "question": "Which technique rewrites a follow-up like 'what about for contractors?' into a standalone query before retrieval?",
+      "difficulty": 1,
+      "tags": [
+        "rag",
+        "query-understanding"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "Reciprocal Rank Fusion",
+        "Speculative decoding",
+        "Conversational query rewriting (condense the question using chat history)",
+        "HyDE"
+      ],
+      "answer": 2,
+      "explanation": "Without rewriting, the retriever sees an ambiguous fragment and returns irrelevant chunks."
+    },
+    {
+      "id": "genai-009",
+      "type": "mcq",
+      "question": "HyDE (Hypothetical Document Embeddings) improves retrieval by:",
+      "difficulty": 3,
+      "tags": [
+        "rag",
+        "query-understanding"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "Having the LLM write a hypothetical answer, then embedding that answer to search",
+        "Training the embedding model on user queries",
+        "Generating synthetic documents to add to the index",
+        "Hashing documents to remove duplicates"
+      ],
+      "answer": 0,
+      "explanation": "A hypothetical answer often lives closer in embedding space to real answer passages than a short question does."
+    },
+    {
+      "id": "genai-010",
+      "type": "mcq",
+      "question": "Which vector index is the most common default for low-latency, high-recall ANN search, at the cost of memory?",
+      "difficulty": 1,
+      "tags": [
+        "rag",
+        "vector-search"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "B-tree",
+        "HNSW",
+        "LSH with 1 hash table",
+        "Flat (brute force)"
+      ],
+      "answer": 1,
+      "explanation": "HNSW is a multi-layer proximity graph: excellent recall/latency, memory-hungry. IVF-PQ trades recall for memory."
+    },
+    {
+      "id": "genai-011",
+      "type": "mcq",
+      "question": "Why can selective metadata filters (e.g. a tenant with 0.1% of vectors) hurt ANN search quality?",
+      "difficulty": 3,
+      "tags": [
+        "rag",
+        "vector-search"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "Filters force exact search over all vectors",
+        "Filters disable cosine similarity",
+        "Filters change the embedding values",
+        "Post-filtering may return too few results, and pre-filtering can break graph connectivity, so recall drops"
+      ],
+      "answer": 3,
+      "explanation": "Filtered ANN is a known hard problem; engines use filtered traversal or per-tenant indexes for very selective filters."
+    },
+    {
+      "id": "genai-012",
+      "type": "mcq",
+      "question": "A 1536-dim float32 embedding is ~6 KB. Roughly how much smaller is it with int8 scalar quantization?",
+      "difficulty": 2,
+      "tags": [
+        "rag",
+        "vector-search",
+        "estimation"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "About 4× smaller (~1.5 KB)",
+        "About 2× smaller",
+        "No change; quantization only affects speed",
+        "About 32× smaller"
+      ],
+      "answer": 0,
+      "explanation": "float32 = 4 bytes → int8 = 1 byte per dimension. Binary quantization would be 32×."
+    },
+    {
+      "id": "genai-013",
+      "type": "mcq",
+      "question": "When is long-context prompting a reasonable substitute for RAG?",
+      "difficulty": 2,
+      "tags": [
+        "rag",
+        "trade-offs"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "options": [
+        "When the corpus is millions of documents",
+        "When permissions vary per document",
+        "Whenever the model supports 1M tokens",
+        "When the relevant material is a few long documents that fit in context and cost/latency are acceptable"
+      ],
+      "answer": 3,
+      "explanation": "Long context doesn't fix cost, latency, mid-context recall, or permission enforcement for large corpora."
+    },
+    {
+      "id": "genai-014",
+      "type": "card",
+      "question": "Name the stages of a RAG ingestion pipeline.",
+      "difficulty": 1,
+      "tags": [
+        "rag"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "answer": "Connectors (with ACLs + change feeds) → parsing/OCR/layout → chunking (+ contextual headers) → enrichment/metadata → embedding (versioned) → indexing (vector + keyword + filters) → updates/deletes."
+    },
+    {
+      "id": "genai-015",
+      "type": "card",
+      "question": "List 5 RAG failure modes and a fix for each.",
+      "difficulty": 2,
+      "tags": [
+        "rag"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "answer": "1) Not retrieved → hybrid search, better chunking, query rewrite. 2) Retrieved but ignored → re-rank, fewer chunks, reorder. 3) Unsupported claims → abstention prompt, grounding check, citations. 4) Stale answers → change feeds, recency boost. 5) Data leakage → ACL filters at retrieval, per-permission cache keys."
+    },
+    {
+      "id": "genai-016",
+      "type": "card",
+      "question": "How do you evaluate retrieval separately from generation?",
+      "difficulty": 1,
+      "tags": [
+        "rag",
+        "evaluation"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "answer": "Label a query set with relevant doc/chunk IDs → measure recall@k, MRR, nDCG for retrieval. Then, holding retrieval fixed, judge generation on faithfulness, relevance, correctness, citation accuracy."
+    },
+    {
+      "id": "genai-017",
+      "type": "card",
+      "question": "What is GraphRAG, and when is it worth it?",
+      "difficulty": 3,
+      "tags": [
+        "rag"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "answer": "Extract entities and relationships into a knowledge graph, cluster into communities, and pre-summarize them. Retrieval can then answer 'global' questions spanning a corpus (themes, relationships). Expensive to build and refresh; worth it for analysis-heavy corpora where naive chunk retrieval fails."
+    },
+    {
+      "id": "genai-018",
+      "type": "card",
+      "question": "What is 'contextual chunk headers' / contextual retrieval?",
+      "difficulty": 2,
+      "tags": [
+        "rag",
+        "chunking"
+      ],
+      "ref": "04-genai-system-design/rag.md",
+      "answer": "Prepend document title, section path, or an LLM-written summary of where the chunk sits to each chunk before embedding/indexing, so chunks carry their context. Improves retrieval for chunks that are ambiguous on their own."
+    },
+    {
+      "id": "genai-019",
+      "type": "mcq",
+      "question": "Which phase of LLM inference determines time-to-first-token (TTFT)?",
+      "difficulty": 1,
+      "tags": [
+        "serving"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "options": [
+        "Decode",
+        "Sampling",
+        "Prefill: processing the whole prompt in parallel",
+        "Detokenization"
+      ],
+      "answer": 2,
+      "explanation": "Prefill is compute-bound and scales with prompt length; decode (one token at a time) determines inter-token latency."
+    },
+    {
+      "id": "genai-020",
+      "type": "mcq",
+      "question": "Decode is typically bound by:",
+      "difficulty": 2,
+      "tags": [
+        "serving"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "options": [
+        "Disk I/O",
+        "GPU memory bandwidth (reading weights and KV cache for each token)",
+        "Network bandwidth to the client",
+        "Tokenizer speed"
+      ],
+      "answer": 1,
+      "explanation": "Each decode step reads all weights plus the KV cache but does little compute per byte, so it's memory-bandwidth-bound; batching helps amortize."
+    },
+    {
+      "id": "genai-021",
+      "type": "mcq",
+      "question": "What does the KV cache store?",
+      "difficulty": 1,
+      "tags": [
+        "serving"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "options": [
+        "The key and value vectors of all previous tokens at every attention layer",
+        "Cached complete responses for repeated prompts",
+        "The final hidden state of the last token only",
+        "The vocabulary embedding table"
+      ],
+      "answer": 0,
+      "explanation": "It avoids recomputing K/V for past tokens on every decode step. Its size grows with layers × KV heads × head dim × sequence length × batch."
+    },
+    {
+      "id": "genai-022",
+      "type": "mcq",
+      "question": "Grouped-query attention (GQA) primarily reduces:",
+      "difficulty": 2,
+      "tags": [
+        "serving",
+        "transformers"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "options": [
+        "The number of transformer layers",
+        "Vocabulary size",
+        "The size of the KV cache (and memory bandwidth during decode)",
+        "Training data requirements"
+      ],
+      "answer": 2,
+      "explanation": "Groups of query heads share one K/V head, shrinking the cache vs multi-head attention while keeping quality close."
+    },
+    {
+      "id": "genai-023",
+      "type": "mcq",
+      "question": "What problem does PagedAttention (vLLM) solve?",
+      "difficulty": 2,
+      "tags": [
+        "serving"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "options": [
+        "Model weight loading time",
+        "Slow tokenization",
+        "Attention's O(n²) compute",
+        "KV-cache memory fragmentation, by allocating the cache in fixed-size blocks like OS pages"
+      ],
+      "answer": 3,
+      "explanation": "Contiguous per-sequence allocation wastes memory; paging allows more concurrent sequences and cache sharing."
+    },
+    {
+      "id": "genai-024",
+      "type": "mcq",
+      "question": "Continuous (in-flight) batching improves throughput by:",
+      "difficulty": 1,
+      "tags": [
+        "serving"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "options": [
+        "Batching only requests with the same output length",
+        "Adding and removing sequences from the batch at every decode step",
+        "Running prefill and decode on separate datacenters",
+        "Waiting until a batch of identical prompts is collected"
+      ],
+      "answer": 1,
+      "explanation": "Static batching wastes GPU time waiting for the longest sequence; continuous batching keeps the GPU full."
+    },
+    {
+      "id": "genai-025",
+      "type": "mcq",
+      "question": "Speculative decoding speeds up generation by:",
+      "difficulty": 2,
+      "tags": [
+        "serving"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "options": [
+        "Having a small draft model propose several tokens that the large model verifies in one forward pass",
+        "Sampling at temperature 0",
+        "Skipping every other layer of the model",
+        "Caching responses to common prompts"
+      ],
+      "answer": 0,
+      "explanation": "Accepted tokens come 'for free'; with proper verification the output distribution matches the large model's."
+    },
+    {
+      "id": "genai-026",
+      "type": "mcq",
+      "question": "To maximize prefix (prompt) caching benefits, you should:",
+      "difficulty": 1,
+      "tags": [
+        "serving",
+        "cost"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "options": [
+        "Put the user's question first",
+        "Randomize the order of few-shot examples each call",
+        "Put stable content (system prompt, tools, few-shot examples, long docs) at the start of the prompt",
+        "Add a timestamp to the top of the system prompt"
+      ],
+      "answer": 2,
+      "explanation": "Caches match on an exact prefix. Anything that varies early (timestamps, user text) breaks the cache for everything after it."
+    },
+    {
+      "id": "genai-027",
+      "type": "mcq",
+      "question": "Your LLM feature's cost is too high. Which lever usually has the biggest impact?",
+      "difficulty": 1,
+      "tags": [
+        "serving",
+        "cost"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "options": [
+        "Lower the temperature",
+        "Increase the number of replicas",
+        "Reduce tokens: smaller retrieved context, shorter outputs, routing easy requests to a cheaper model, caching",
+        "Switch from SSE to WebSockets"
+      ],
+      "answer": 2,
+      "explanation": "Cost scales with input/output tokens × price per token. Output tokens are typically the most expensive."
+    },
+    {
+      "id": "genai-028",
+      "type": "mcq",
+      "question": "Hosted LLM API rate limits are typically expressed in:",
+      "difficulty": 1,
+      "tags": [
+        "serving",
+        "operations"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "options": [
+        "Bytes per second",
+        "GPU-hours per day",
+        "Tokens per minute (TPM) and requests per minute (RPM)",
+        "Concurrent TCP connections"
+      ],
+      "answer": 2,
+      "explanation": "Plan capacity in tokens, spread load across deployments/regions, and handle 429s with backoff."
+    },
+    {
+      "id": "genai-029",
+      "type": "mcq",
+      "question": "Which quantization statement is most accurate?",
+      "difficulty": 2,
+      "tags": [
+        "serving"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "options": [
+        "INT8/INT4 weight quantization cuts memory and speeds decode with a small, task-dependent quality loss you must measure",
+        "Quantization only affects training, not inference",
+        "Quantization increases the KV cache size",
+        "INT4 is always lossless"
+      ],
+      "answer": 0,
+      "explanation": "Methods like GPTQ/AWQ make INT4 viable; always re-run your evals."
+    },
+    {
+      "id": "genai-030",
+      "type": "card",
+      "question": "Write the formula for KV-cache memory per token.",
+      "difficulty": 3,
+      "tags": [
+        "serving",
+        "estimation"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "answer": "2 (K and V) × layers × KV heads × head_dim × bytes per value. E.g. 80 layers × 8 KV heads × 128 × 2 bytes × 2 ≈ 320 KB/token for a 70B-class GQA model in fp16."
+    },
+    {
+      "id": "genai-031",
+      "type": "card",
+      "question": "Self-host open-weights vs hosted API: give 3 reasons for each.",
+      "difficulty": 2,
+      "tags": [
+        "serving",
+        "trade-offs"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "answer": "Self-host: data stays in your VPC, fine-tuning/control, cheaper at high steady utilization, no vendor rate limits. API: frontier quality, no GPU ops, elastic capacity, fastest iteration. Hybrid is common: API for hard tasks, self-hosted small models for high-volume simple ones."
+    },
+    {
+      "id": "genai-032",
+      "type": "card",
+      "question": "What does an LLM gateway do?",
+      "difficulty": 2,
+      "tags": [
+        "serving",
+        "platform"
+      ],
+      "ref": "04-genai-system-design/llm-serving.md",
+      "answer": "Single entry point for model calls: auth, per-tenant quotas/budgets (TPM, $), routing across models/regions, fallbacks/retries, caching (exact + semantic), PII redaction, prompt registry, logging/tracing, usage metering/chargeback, eval hooks."
+    },
+    {
+      "id": "genai-033",
+      "type": "mcq",
+      "question": "According to common guidance (e.g. Anthropic's 'Building effective agents'), what's the difference between a workflow and an agent?",
+      "difficulty": 1,
+      "tags": [
+        "agents"
+      ],
+      "ref": "04-genai-system-design/agents.md",
+      "options": [
+        "Agents never call tools; workflows do",
+        "Workflows follow predefined code paths; agents let the LLM dynamically decide steps and tool use",
+        "There is no meaningful difference",
+        "Workflows use smaller models; agents use larger ones"
+      ],
+      "answer": 1,
+      "explanation": "Prefer workflows for predictability and add agentic autonomy only where the task requires it."
+    },
+    {
+      "id": "genai-034",
+      "type": "mcq",
+      "question": "An agent can issue refunds. Which design is safest?",
+      "difficulty": 1,
+      "tags": [
+        "agents",
+        "safety"
+      ],
+      "ref": "04-genai-system-design/agents.md",
+      "options": [
+        "Give the agent an admin service account so it never fails",
+        "Allow refunds only if the model is very confident",
+        "The tool executes with the customer's scoped identity, is idempotent, enforces a policy limit, and requires human approval above a threshold",
+        "Let the model decide whether approval is needed"
+      ],
+      "answer": 2,
+      "explanation": "Deterministic code enforces permissions and limits; the model only proposes."
+    },
+    {
+      "id": "genai-035",
+      "type": "mcq",
+      "question": "Indirect prompt injection is best described as:",
+      "difficulty": 1,
+      "tags": [
+        "agents",
+        "safety"
+      ],
+      "ref": "04-genai-system-design/safety-and-guardrails.md",
+      "options": [
+        "A bug in the tokenizer",
+        "A user typing 'ignore previous instructions'",
+        "Injecting SQL through a chat box",
+        "Malicious instructions embedded in content the system retrieves or receives from tools (web pages, emails, docs)"
+      ],
+      "answer": 3,
+      "explanation": "Treat retrieved/tool content as untrusted data that can never grant permissions or change instructions."
+    },
+    {
+      "id": "genai-036",
+      "type": "mcq",
+      "question": "What is MCP (Model Context Protocol)?",
+      "difficulty": 1,
+      "tags": [
+        "agents"
+      ],
+      "ref": "04-genai-system-design/agents.md",
+      "options": [
+        "A proprietary fine-tuning API",
+        "An open protocol for exposing tools, resources, and prompts to LLM applications in a standard way",
+        "A GPU scheduling protocol",
+        "A tokenizer format"
+      ],
+      "answer": 1,
+      "explanation": "Write a tool server once and reuse it across compatible clients/agents. (A2A-style protocols address agent-to-agent communication.)"
+    },
+    {
+      "id": "genai-037",
+      "type": "mcq",
+      "question": "Which is NOT a recommended practice for agent tool design?",
+      "difficulty": 1,
+      "tags": [
+        "agents"
+      ],
+      "ref": "04-genai-system-design/agents.md",
+      "options": [
+        "Return actionable error messages",
+        "Make side-effecting tools idempotent",
+        "Use typed JSON schemas with clear descriptions",
+        "Return the full raw API payload (tens of thousands of tokens) so the model has everything"
+      ],
+      "answer": 3,
+      "explanation": "Huge outputs waste context, cost, and attention. Paginate and summarize."
+    },
+    {
+      "id": "genai-038",
+      "type": "mcq",
+      "question": "ReAct refers to:",
+      "difficulty": 1,
+      "tags": [
+        "agents"
+      ],
+      "ref": "04-genai-system-design/agents.md",
+      "options": [
+        "Re-ranking retrieved documents",
+        "Reinforcement learning from human feedback",
+        "Interleaving reasoning steps with actions (tool calls) and observations in a loop",
+        "A JavaScript UI framework for chat apps"
+      ],
+      "answer": 2,
+      "explanation": "Thought → Action → Observation, repeated until the task is done."
+    },
+    {
+      "id": "genai-039",
+      "type": "mcq",
+      "question": "When is a multi-agent design justified over a single agent?",
+      "difficulty": 2,
+      "tags": [
+        "agents",
+        "trade-offs"
+      ],
+      "ref": "04-genai-system-design/agents.md",
+      "options": [
+        "When the task has only one step",
+        "When you want to reduce token costs",
+        "When subtasks need different tools/prompts/contexts, can run in parallel, or a single context would get too large",
+        "Always: more agents means higher quality"
+      ],
+      "answer": 2,
+      "explanation": "Multi-agent adds tokens, coordination failures, and debugging difficulty. Justify it."
+    },
+    {
+      "id": "genai-040",
+      "type": "card",
+      "question": "List 6 reliability controls for production agents.",
+      "difficulty": 2,
+      "tags": [
+        "agents"
+      ],
+      "ref": "04-genai-system-design/agents.md",
+      "answer": "Max steps/turns, token/$ budgets, timeouts, loop detection, schema-validated tool args, idempotency keys, least-privilege delegated auth, human approval for high-impact actions, sandboxed code execution, full tracing."
+    },
+    {
+      "id": "genai-041",
+      "type": "card",
+      "question": "How do you evaluate an agent?",
+      "difficulty": 2,
+      "tags": [
+        "agents",
+        "evaluation"
+      ],
+      "ref": "04-genai-system-design/agents.md",
+      "answer": "Scenario suites with simulated users/tools: task success rate, steps and cost per success, tool-call accuracy (right tool, valid args), recovery from tool errors, harmful-action rate; trajectory reviews; every production failure becomes a regression test. Benchmarks for reference: SWE-bench Verified, τ-bench, GAIA, WebArena."
+    },
+    {
+      "id": "genai-042",
+      "type": "card",
+      "question": "Short-term vs long-term memory in agents?",
+      "difficulty": 2,
+      "tags": [
+        "agents"
+      ],
+      "ref": "04-genai-system-design/agents.md",
+      "answer": "Short-term: the conversation/working context (windowed or summarized), plus an explicit task-state object. Long-term: persisted facts/preferences retrieved like RAG, with write policies, privacy controls, and deletion."
+    },
+    {
+      "id": "genai-043",
+      "type": "mcq",
+      "question": "Which LLM-as-judge setup is generally the most reliable?",
+      "difficulty": 1,
+      "tags": [
+        "evaluation"
+      ],
+      "ref": "04-genai-system-design/evaluation.md",
+      "options": [
+        "Letting the judge see which output is from the new model",
+        "Using the same model as the system under test, unvalidated",
+        "Absolute 1–10 scores with no rubric",
+        "Pairwise comparison with randomized order and a specific rubric, validated against human labels"
+      ],
+      "answer": 3,
+      "explanation": "Judges have position, verbosity, and self-preference biases; calibrate with human agreement before trusting them."
+    },
+    {
+      "id": "genai-044",
+      "type": "mcq",
+      "question": "Faithfulness (groundedness) measures:",
+      "difficulty": 1,
+      "tags": [
+        "evaluation",
+        "rag"
+      ],
+      "ref": "04-genai-system-design/evaluation.md",
+      "options": [
+        "How fast the answer streamed",
+        "Whether the answer matches the user's tone",
+        "Whether retrieval found all relevant docs",
+        "Whether every claim in the answer is supported by the retrieved context"
+      ],
+      "answer": 3,
+      "explanation": "An answer can be correct but unfaithful (from parametric memory) or faithful to wrong context, so measure both."
+    },
+    {
+      "id": "genai-045",
+      "type": "mcq",
+      "question": "A prompt change improved your golden-set score from 82% to 84% on 50 examples. Ship it?",
+      "difficulty": 2,
+      "tags": [
+        "evaluation"
+      ],
+      "ref": "04-genai-system-design/evaluation.md",
+      "options": [
+        "No, prompt changes should never be shipped",
+        "Not on that alone: 2 points on 50 items is within noise; check confidence intervals, more data, and per-slice regressions",
+        "Yes, as long as latency didn't change",
+        "Yes, any improvement should ship"
+      ],
+      "answer": 1,
+      "explanation": "1 item = 2 points here. Use larger sets, paired comparisons, and slice analysis."
+    },
+    {
+      "id": "genai-046",
+      "type": "mcq",
+      "question": "Which change does NOT need to go through the LLM eval gate?",
+      "difficulty": 1,
+      "tags": [
+        "evaluation"
+      ],
+      "ref": "04-genai-system-design/evaluation.md",
+      "options": [
+        "Changing the color of the chat bubble",
+        "Upgrading the model version",
+        "Updating the system prompt",
+        "Changing the chunk size"
+      ],
+      "answer": 0,
+      "explanation": "Prompts, models, retrieval config, and tool schemas all change behavior and can regress quality."
+    },
+    {
+      "id": "genai-047",
+      "type": "mcq",
+      "question": "Which benchmark pair is generally considered saturated for frontier models (less useful for differentiation)?",
+      "difficulty": 2,
+      "tags": [
+        "evaluation"
+      ],
+      "ref": "04-genai-system-design/evaluation.md",
+      "options": [
+        "SWE-bench Verified and GPQA",
+        "τ-bench and GAIA",
+        "MMLU and HumanEval",
+        "LiveCodeBench and MMLU-Pro"
+      ],
+      "answer": 2,
+      "explanation": "Harder/more realistic benchmarks have replaced them for frontier comparisons. Still, build evals on your own task."
+    },
+    {
+      "id": "genai-048",
+      "type": "card",
+      "question": "How do you build a golden dataset for an LLM feature?",
+      "difficulty": 1,
+      "tags": [
+        "evaluation"
+      ],
+      "ref": "04-genai-system-design/evaluation.md",
+      "answer": "Sample 50–200 real (de-identified) inputs, stratified by intent/difficulty/language/risk; add adversarial cases (unanswerable, injection, out-of-scope); expert labels with reference answers or rubrics plus expected sources; version it; keep a held-out slice; add every production failure."
+    },
+    {
+      "id": "genai-049",
+      "type": "card",
+      "question": "Name 5 online signals for an LLM assistant.",
+      "difficulty": 1,
+      "tags": [
+        "evaluation"
+      ],
+      "ref": "04-genai-system-design/evaluation.md",
+      "answer": "Thumbs up/down, reformulation/retry rate, copy events, escalation-to-human rate, task completion/deflection, session abandonment; guardrails: latency (TTFT, p95), cost/request, safety-flag rate."
+    },
+    {
+      "id": "genai-050",
+      "type": "mcq",
+      "question": "Your assistant needs knowledge of policy documents that change weekly. Best approach?",
+      "difficulty": 1,
+      "tags": [
+        "fine-tuning",
+        "rag"
+      ],
+      "ref": "04-genai-system-design/fine-tuning-and-alignment.md",
+      "options": [
+        "Increase temperature",
+        "RAG over the policy documents",
+        "Fine-tune the model weekly on the documents",
+        "Pre-train a model from scratch"
+      ],
+      "answer": 1,
+      "explanation": "RAG handles changing knowledge, supports citations, and is cheap to update. Fine-tuning is for behavior/format."
+    },
+    {
+      "id": "genai-051",
+      "type": "mcq",
+      "question": "LoRA works by:",
+      "difficulty": 1,
+      "tags": [
+        "fine-tuning"
+      ],
+      "ref": "04-genai-system-design/fine-tuning-and-alignment.md",
+      "options": [
+        "Training only the embedding layer",
+        "Quantizing the model to 4 bits",
+        "Freezing base weights and training small low-rank matrices whose product is added to selected weight matrices",
+        "Pruning 90% of the model's weights"
+      ],
+      "answer": 2,
+      "explanation": "ΔW = B·A with rank r ≪ d: few trainable params, swappable adapters. QLoRA adds a 4-bit quantized base."
+    },
+    {
+      "id": "genai-052",
+      "type": "mcq",
+      "question": "DPO differs from classic RLHF in that it:",
+      "difficulty": 2,
+      "tags": [
+        "fine-tuning",
+        "alignment"
+      ],
+      "ref": "04-genai-system-design/fine-tuning-and-alignment.md",
+      "options": [
+        "Uses unit tests as rewards",
+        "Optimizes the policy directly on preference pairs, without training a separate reward model or running PPO",
+        "Requires no preference data",
+        "Only works for image models"
+      ],
+      "answer": 1,
+      "explanation": "Simpler and more stable; widely used. RL with verifiable rewards (e.g. tests, math answers) is used for reasoning models."
+    },
+    {
+      "id": "genai-053",
+      "type": "mcq",
+      "question": "Which is the strongest signal that fine-tuning is worth it?",
+      "difficulty": 2,
+      "tags": [
+        "fine-tuning"
+      ],
+      "ref": "04-genai-system-design/fine-tuning-and-alignment.md",
+      "options": [
+        "Users want citations",
+        "A prompted base model + RAG still misses a consistent output format/style on a high-volume narrow task, and you have ~1K quality examples",
+        "The model doesn't know yesterday's news",
+        "You want to reduce hallucinated facts about changing data"
+      ],
+      "answer": 1,
+      "explanation": "Fine-tune for behavior and efficiency (distill to a smaller model); use RAG for knowledge."
+    },
+    {
+      "id": "genai-054",
+      "type": "card",
+      "question": "Give the decision ladder from prompting to pre-training.",
+      "difficulty": 1,
+      "tags": [
+        "fine-tuning"
+      ],
+      "ref": "04-genai-system-design/fine-tuning-and-alignment.md",
+      "answer": "1) Prompt engineering (+ few-shot, structured output) → 2) RAG for knowledge gaps → 3) Fine-tuning (LoRA/SFT/DPO) for behavior, format, or a cheaper distilled model → 4) Continued pre-training only for huge domain corpora. Always compare against the cheaper baseline on evals."
+    },
+    {
+      "id": "genai-055",
+      "type": "mcq",
+      "question": "Which control best prevents a support bot from leaking one customer's data to another?",
+      "difficulty": 1,
+      "tags": [
+        "safety"
+      ],
+      "ref": "04-genai-system-design/safety-and-guardrails.md",
+      "options": [
+        "Set temperature to 0",
+        "Use a larger model",
+        "Scope every retrieval and tool call to the authenticated customer's ID in code",
+        "Tell the model in the system prompt never to reveal other customers' data"
+      ],
+      "answer": 2,
+      "explanation": "Authorization must be deterministic and outside the model."
+    },
+    {
+      "id": "genai-056",
+      "type": "mcq",
+      "question": "Rendering raw LLM output directly as HTML in a web app risks:",
+      "difficulty": 1,
+      "tags": [
+        "safety"
+      ],
+      "ref": "04-genai-system-design/safety-and-guardrails.md",
+      "options": [
+        "Higher token costs",
+        "Embedding drift",
+        "Cross-site scripting (insecure output handling)",
+        "Prompt caching misses"
+      ],
+      "answer": 2,
+      "explanation": "Treat model output as untrusted input to downstream systems: escape, validate, sandbox."
+    },
+    {
+      "id": "genai-057",
+      "type": "card",
+      "question": "Name 6 items from the OWASP Top 10 for LLM applications.",
+      "difficulty": 2,
+      "tags": [
+        "safety"
+      ],
+      "ref": "04-genai-system-design/safety-and-guardrails.md",
+      "answer": "Prompt injection, sensitive information disclosure, supply chain, data and model poisoning, improper output handling, excessive agency, system prompt leakage, vector and embedding weaknesses, misinformation, unbounded consumption."
+    },
+    {
+      "id": "genai-058",
+      "type": "card",
+      "question": "Sketch a guardrail pipeline.",
+      "difficulty": 2,
+      "tags": [
+        "safety"
+      ],
+      "ref": "04-genai-system-design/safety-and-guardrails.md",
+      "answer": "Input: authN/authZ → rate/budget limits → PII redaction → injection/policy classifier. Orchestration: tools run with the user's permissions. Output: schema validation → groundedness check → content safety → PII/DLP scan. Run checks in parallel where possible to limit latency."
+    },
+    {
+      "id": "genai-059",
+      "type": "mcq",
+      "question": "In an LLM system design interview, what's the strongest first move after hearing the prompt?",
+      "difficulty": 1,
+      "tags": [
+        "framework"
+      ],
+      "ref": "04-genai-system-design/framework.md",
+      "options": [
+        "Start writing the system prompt",
+        "Pick the largest available model",
+        "Draw the vector database",
+        "Clarify users, success metrics, data/permissions, actions, risk level, scale, and latency/cost constraints"
+      ],
+      "answer": 3,
+      "explanation": "Staff candidates scope and define success before drawing boxes."
+    },
+    {
+      "id": "genai-060",
+      "type": "mcq",
+      "question": "A user asks for an AI feature. The task is routing 5 well-defined request types to forms. Best answer?",
+      "difficulty": 2,
+      "tags": [
+        "framework",
+        "trade-offs"
+      ],
+      "ref": "04-genai-system-design/framework.md",
+      "options": [
+        "Fine-tune a 70B model",
+        "Build a multi-agent system with a planner",
+        "Use RAG over the forms",
+        "A small classifier or even rules may be enough; use an LLM only if the inputs are too varied, and measure against that baseline"
+      ],
+      "answer": 3,
+      "explanation": "Knowing when NOT to use an LLM is a Staff signal."
+    },
+    {
+      "id": "genai-061",
+      "type": "card",
+      "question": "What 5 things do Staff candidates cover in LLM designs that others skip?",
+      "difficulty": 1,
+      "tags": [
+        "framework"
+      ],
+      "ref": "04-genai-system-design/framework.md",
+      "answer": "1) Evaluation design and release gates. 2) Permission-aware retrieval/tools. 3) Cost per request and latency budget (TTFT, routing, caching). 4) Failure handling and fallbacks. 5) Rollout: shadow → A/B → ramp, with versioned prompts/models/indexes and rollback."
+    },
+    {
+      "id": "genai-062",
+      "type": "card",
+      "question": "Draw (describe) the request path of a production RAG assistant.",
+      "difficulty": 1,
+      "tags": [
+        "framework",
+        "rag"
+      ],
+      "ref": "04-genai-system-design/framework.md",
+      "answer": "Client → gateway (auth, rate limit) → orchestrator → input guardrails → query rewrite/route → hybrid retrieval with ACL filter → re-rank → prompt assembly (versioned, token budget) → LLM via model gateway (fallbacks, cache) → output guardrails (grounding, safety) → stream with citations; tracing + feedback + cost metering throughout."
+    }
+  ]
+}

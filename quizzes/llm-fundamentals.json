@@ -1,0 +1,414 @@
+{
+  "topic": "llm-fundamentals",
+  "title": "Transformers & LLM fundamentals",
+  "questions": [
+    {
+      "id": "llm-fundamentals-001",
+      "type": "mcq",
+      "question": "Why is QKᵀ divided by √d_k in attention?",
+      "difficulty": 1,
+      "tags": [
+        "attention"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "To make attention linear-time",
+        "To keep dot-product magnitudes from growing with dimension, which would saturate softmax and shrink gradients",
+        "To normalize the output vectors to unit length",
+        "To apply the causal mask"
+      ],
+      "answer": 1,
+      "explanation": "For unit-variance components, the dot product's variance grows with d_k."
+    },
+    {
+      "id": "llm-fundamentals-002",
+      "type": "mcq",
+      "question": "Time complexity of full self-attention in sequence length n (hidden size d)?",
+      "difficulty": 1,
+      "tags": [
+        "attention"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "O(n log n)",
+        "O(d²) independent of n",
+        "O(n · d)",
+        "O(n² · d)"
+      ],
+      "answer": 3,
+      "explanation": "Every token attends to every token; memory is O(n²) for the attention matrix (FlashAttention avoids materializing it)."
+    },
+    {
+      "id": "llm-fundamentals-003",
+      "type": "mcq",
+      "question": "A causal mask in decoder attention:",
+      "difficulty": 1,
+      "tags": [
+        "attention"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "Randomly drops attention heads",
+        "Hides padding tokens only",
+        "Removes the first token",
+        "Prevents each position from attending to future positions"
+      ],
+      "answer": 3,
+      "explanation": "Set scores for j > i to −∞ before softmax."
+    },
+    {
+      "id": "llm-fundamentals-004",
+      "type": "mcq",
+      "question": "Why do transformers need positional information?",
+      "difficulty": 1,
+      "tags": [
+        "positional"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "Self-attention is permutation-invariant; without positions, word order is invisible",
+        "To speed up tokenization",
+        "Only for encoder models",
+        "To reduce memory"
+      ],
+      "answer": 0,
+      "explanation": "Sinusoidal, learned, RoPE, or ALiBi add order information."
+    },
+    {
+      "id": "llm-fundamentals-005",
+      "type": "mcq",
+      "question": "RoPE encodes position by:",
+      "difficulty": 2,
+      "tags": [
+        "positional"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "Multiplying values by the position",
+        "Appending the position index as a token",
+        "Adding a learned vector to each token embedding",
+        "Rotating query and key vectors by position-dependent angles so their dot product depends on relative position"
+      ],
+      "answer": 3,
+      "explanation": "Used by Llama, Qwen, Mistral; extendable with scaling methods (NTK, YaRN)."
+    },
+    {
+      "id": "llm-fundamentals-006",
+      "type": "mcq",
+      "question": "Which architecture family dominates today's general-purpose LLMs?",
+      "difficulty": 1,
+      "tags": [
+        "architecture"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "CNNs",
+        "Decoder-only transformers",
+        "Encoder-only (BERT-style)",
+        "RNNs"
+      ],
+      "answer": 1,
+      "explanation": "Encoder-only models remain strong for embeddings and classification."
+    },
+    {
+      "id": "llm-fundamentals-007",
+      "type": "mcq",
+      "question": "Temperature T in sampling:",
+      "difficulty": 1,
+      "tags": [
+        "decoding"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "Controls the context length",
+        "Divides logits by T before softmax: T < 1 sharpens the distribution, T > 1 flattens it",
+        "Selects the top-T tokens",
+        "Limits the number of output tokens"
+      ],
+      "answer": 1,
+      "explanation": "T → 0 approaches greedy decoding."
+    },
+    {
+      "id": "llm-fundamentals-008",
+      "type": "mcq",
+      "question": "Top-p (nucleus) sampling:",
+      "difficulty": 1,
+      "tags": [
+        "decoding"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "Repeats the prompt p times",
+        "Samples from the smallest set of tokens whose cumulative probability ≥ p",
+        "Samples only tokens with probability ≥ p",
+        "Always picks the p most likely tokens"
+      ],
+      "answer": 1,
+      "explanation": "The candidate set adapts to how peaked the distribution is."
+    },
+    {
+      "id": "llm-fundamentals-009",
+      "type": "mcq",
+      "question": "Chinchilla scaling suggests compute-optimal training uses roughly:",
+      "difficulty": 2,
+      "tags": [
+        "scaling"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "~1,000 tokens per parameter",
+        "~1 token per parameter",
+        "As few tokens as possible",
+        "~20 training tokens per parameter"
+      ],
+      "answer": 3,
+      "explanation": "Production models often train far longer than this because smaller models are cheaper at inference."
+    },
+    {
+      "id": "llm-fundamentals-010",
+      "type": "mcq",
+      "question": "Approximate training compute for a dense transformer with N parameters on D tokens?",
+      "difficulty": 3,
+      "tags": [
+        "scaling"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "≈ N² FLOPs",
+        "≈ N·D FLOPs",
+        "≈ 6·N·D FLOPs",
+        "≈ 2·N FLOPs total"
+      ],
+      "answer": 2,
+      "explanation": "2ND forward + 4ND backward. Inference ≈ 2N FLOPs per token."
+    },
+    {
+      "id": "llm-fundamentals-011",
+      "type": "mcq",
+      "question": "Why are LLMs often bad at counting letters in a word?",
+      "difficulty": 1,
+      "tags": [
+        "tokenization"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "They see subword tokens, not individual characters",
+        "Attention can't count",
+        "Temperature is too high",
+        "They have no training data about spelling"
+      ],
+      "answer": 0,
+      "explanation": "'strawberry' may be 2–3 tokens; character structure is only indirectly learned."
+    },
+    {
+      "id": "llm-fundamentals-012",
+      "type": "mcq",
+      "question": "What does RLHF add after SFT?",
+      "difficulty": 2,
+      "tags": [
+        "alignment"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "Optimizing the model against a reward model trained on human preference comparisons (e.g. with PPO and a KL penalty)",
+        "More pre-training data",
+        "A larger vocabulary",
+        "A retrieval index"
+      ],
+      "answer": 0,
+      "explanation": "The KL term keeps the policy close to the SFT model to avoid reward hacking."
+    },
+    {
+      "id": "llm-fundamentals-013",
+      "type": "mcq",
+      "question": "'Reasoning models' are commonly trained with:",
+      "difficulty": 2,
+      "tags": [
+        "alignment"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "Reinforcement learning on verifiable rewards (e.g. correct math answers, passing unit tests)",
+        "Smaller vocabularies",
+        "Only more pre-training data",
+        "No fine-tuning at all"
+      ],
+      "answer": 0,
+      "explanation": "This produces long chains of thought; prompting them needs clear goals more than 'think step by step'."
+    },
+    {
+      "id": "llm-fundamentals-014",
+      "type": "mcq",
+      "question": "An encoder-only model like BERT is pre-trained with:",
+      "difficulty": 2,
+      "tags": [
+        "architecture"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "Next-token prediction only",
+        "Masked language modeling (predict masked tokens from both sides)",
+        "Reinforcement learning",
+        "Contrastive image–text loss"
+      ],
+      "answer": 1,
+      "explanation": "Bidirectional context makes it good for classification and embeddings, not open-ended generation."
+    },
+    {
+      "id": "llm-fundamentals-015",
+      "type": "mcq",
+      "question": "Which best reduces hallucination in a production Q&A assistant?",
+      "difficulty": 1,
+      "tags": [
+        "hallucination"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "Removing the system prompt",
+        "Raising temperature",
+        "Longer system prompts with more adjectives",
+        "RAG with citations, explicit permission to say 'I don't know', and a grounding check"
+      ],
+      "answer": 3,
+      "explanation": "Combine retrieval, abstention, and verification; measure faithfulness."
+    },
+    {
+      "id": "llm-fundamentals-016",
+      "type": "mcq",
+      "question": "Why does a low-rank (LoRA) update work well for fine-tuning?",
+      "difficulty": 3,
+      "tags": [
+        "fine-tuning"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "Because LLM weights are already low-rank",
+        "Task-specific weight changes tend to have low intrinsic rank, so a small B·A captures most of the adaptation",
+        "Because it trains the whole model faster",
+        "It only works for classification"
+      ],
+      "answer": 1,
+      "explanation": "Few trainable parameters, little forgetting, swappable adapters."
+    },
+    {
+      "id": "llm-fundamentals-017",
+      "type": "mcq",
+      "question": "CLIP is trained by:",
+      "difficulty": 2,
+      "tags": [
+        "multimodal"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "Contrastively aligning image and text embeddings from paired data",
+        "Generating captions with a decoder only",
+        "Masked image modeling only",
+        "Supervised ImageNet labels"
+      ],
+      "answer": 0,
+      "explanation": "Enables zero-shot classification and text-to-image retrieval."
+    },
+    {
+      "id": "llm-fundamentals-018",
+      "type": "mcq",
+      "question": "Matryoshka embeddings let you:",
+      "difficulty": 3,
+      "tags": [
+        "embeddings"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "Embed images and text together",
+        "Truncate an embedding to fewer dimensions with modest quality loss",
+        "Store embeddings without floating point",
+        "Skip normalization"
+      ],
+      "answer": 1,
+      "explanation": "Useful for cheaper first-pass retrieval with a full-dimension re-score."
+    },
+    {
+      "id": "llm-fundamentals-019",
+      "type": "mcq",
+      "question": "Pre-norm transformer blocks (norm inside the residual branch, before attention/MLP) are preferred because:",
+      "difficulty": 3,
+      "tags": [
+        "architecture"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "options": [
+        "They train more stably for deep networks",
+        "They remove the need for residual connections",
+        "They make attention linear",
+        "They use less memory"
+      ],
+      "answer": 0,
+      "explanation": "Post-norm (the original) needs careful warmup and is harder to train deep."
+    },
+    {
+      "id": "llm-fundamentals-020",
+      "type": "card",
+      "question": "Write the attention equation and explain it in one sentence.",
+      "difficulty": 1,
+      "tags": [
+        "attention"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "answer": "Attention(Q,K,V) = softmax(QKᵀ/√d_k)·V. Each token's output is a weighted average of value vectors, weighted by how well its query matches each key."
+    },
+    {
+      "id": "llm-fundamentals-021",
+      "type": "card",
+      "question": "List the stages of building a chat LLM.",
+      "difficulty": 1,
+      "tags": [
+        "training"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "answer": "Pre-training (next-token prediction on trillions of tokens) → optional mid-training/continued pre-training (domain, long context) → SFT on instructions → preference tuning (RLHF/DPO/RLAIF) → often RL with verifiable rewards for reasoning → safety tuning and evals."
+    },
+    {
+      "id": "llm-fundamentals-022",
+      "type": "card",
+      "question": "Multi-head vs multi-query vs grouped-query attention?",
+      "difficulty": 2,
+      "tags": [
+        "attention"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "answer": "MHA: each head has its own Q, K, V. MQA: all heads share one K/V (smallest KV cache, some quality loss). GQA: groups of query heads share K/V (a middle ground; standard in modern LLMs)."
+    },
+    {
+      "id": "llm-fundamentals-023",
+      "type": "card",
+      "question": "Why doesn't a 1M-token context window make RAG obsolete?",
+      "difficulty": 2,
+      "tags": [
+        "rag"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "answer": "Cost and latency scale with tokens; recall degrades for information in the middle of long contexts; permissions still need enforcing per user; corpora are often far larger than any window; freshness and citations are easier with retrieval."
+    },
+    {
+      "id": "llm-fundamentals-024",
+      "type": "card",
+      "question": "Name 5 prompting techniques that reliably help.",
+      "difficulty": 1,
+      "tags": [
+        "prompting"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "answer": "Clear task + constraints + output format; role/context; few-shot examples; delimiters around untrusted content; step-by-step reasoning (or using a reasoning model); decomposition into sub-prompts; self-consistency; structured output schemas; stable prefix first for caching."
+    },
+    {
+      "id": "llm-fundamentals-025",
+      "type": "card",
+      "question": "What is BPE tokenization?",
+      "difficulty": 2,
+      "tags": [
+        "tokenization"
+      ],
+      "ref": "05-ml-fundamentals/transformers-and-llms.md",
+      "answer": "Byte-Pair Encoding: start from characters/bytes and repeatedly merge the most frequent adjacent pair into a new token, building a subword vocabulary. Balances vocabulary size against sequence length; byte-level BPE can encode any string."
+    }
+  ]
+}

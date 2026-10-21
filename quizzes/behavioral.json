@@ -1,0 +1,427 @@
+{
+  "topic": "behavioral",
+  "title": "Behavioral, leadership & loop strategy",
+  "questions": [
+    {
+      "id": "behavioral-001",
+      "type": "card",
+      "question": "Amazon LP: 'Customer Obsession'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Start with the customer and work backward; earn and keep customer trust. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-002",
+      "type": "card",
+      "question": "Amazon LP: 'Ownership'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Think long term, act on behalf of the whole company, never say 'that's not my job'. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-003",
+      "type": "card",
+      "question": "Amazon LP: 'Invent and Simplify'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Expect and require innovation; find ways to simplify; accept ideas from anywhere. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-004",
+      "type": "card",
+      "question": "Amazon LP: 'Are Right, A Lot'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Strong judgment and instincts; seek diverse perspectives; work to disconfirm your own beliefs. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-005",
+      "type": "card",
+      "question": "Amazon LP: 'Learn and Be Curious'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Never done learning; explore new possibilities. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-006",
+      "type": "card",
+      "question": "Amazon LP: 'Hire and Develop the Best'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Raise the performance bar with every hire and promotion; coach others. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-007",
+      "type": "card",
+      "question": "Amazon LP: 'Insist on the Highest Standards'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Relentlessly high standards; fix problems so they stay fixed. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-008",
+      "type": "card",
+      "question": "Amazon LP: 'Think Big'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Create and communicate a bold direction that inspires results. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-009",
+      "type": "card",
+      "question": "Amazon LP: 'Bias for Action'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Speed matters; many decisions are reversible; take calculated risks. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-010",
+      "type": "card",
+      "question": "Amazon LP: 'Frugality'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Accomplish more with less; no extra points for headcount or budget. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-011",
+      "type": "card",
+      "question": "Amazon LP: 'Earn Trust'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Listen attentively, speak candidly, be self-critical, benchmark against the best. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-012",
+      "type": "card",
+      "question": "Amazon LP: 'Dive Deep'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Operate at all levels, stay connected to details, audit frequently, be skeptical when metrics and anecdotes differ. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-013",
+      "type": "card",
+      "question": "Amazon LP: 'Have Backbone; Disagree and Commit'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Respectfully challenge decisions you disagree with; once decided, commit wholly. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-014",
+      "type": "card",
+      "question": "Amazon LP: 'Deliver Results'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Focus on key inputs; deliver with quality and on time despite setbacks. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-015",
+      "type": "card",
+      "question": "Amazon LP: 'Strive to be Earth's Best Employer'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Create a safer, more productive, diverse, and just work environment; lead with empathy. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-016",
+      "type": "card",
+      "question": "Amazon LP: 'Success and Scale Bring Broad Responsibility'. What does it mean, and which of your stories fits?",
+      "difficulty": 2,
+      "tags": [
+        "amazon",
+        "lp"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "answer": "Be humble and thoughtful about secondary effects; leave things better than you found them. → Name your story (see the mapping table in amazon-leadership-principles.md)."
+    },
+    {
+      "id": "behavioral-017",
+      "type": "mcq",
+      "question": "How many Amazon Leadership Principles are there today?",
+      "difficulty": 1,
+      "tags": [
+        "amazon"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "options": [
+        "12",
+        "14",
+        "16",
+        "10"
+      ],
+      "answer": 2,
+      "explanation": "Two were added in 2021: Strive to be Earth's Best Employer, and Success and Scale Bring Broad Responsibility."
+    },
+    {
+      "id": "behavioral-018",
+      "type": "mcq",
+      "question": "What is Amazon's 'Bar Raiser'?",
+      "difficulty": 1,
+      "tags": [
+        "amazon"
+      ],
+      "ref": "06-behavioral/amazon-leadership-principles.md",
+      "options": [
+        "A peer reference check",
+        "An experienced interviewer from outside the hiring team who ensures hires raise the bar and can veto",
+        "The hiring manager",
+        "A coding test"
+      ],
+      "answer": 1,
+      "explanation": "Expect deeper follow-ups and probing of your weakest-looking area."
+    },
+    {
+      "id": "behavioral-019",
+      "type": "mcq",
+      "question": "In STAR-L, roughly what share of a story should be Actions?",
+      "difficulty": 1,
+      "tags": [
+        "star"
+      ],
+      "ref": "06-behavioral/story-framework.md",
+      "options": [
+        "About 90%",
+        "About 10%",
+        "About half",
+        "About 25%"
+      ],
+      "answer": 2,
+      "explanation": "Situation and task are short context; actions show what *you* did; results and learning close it."
+    },
+    {
+      "id": "behavioral-020",
+      "type": "mcq",
+      "question": "Which story trait most clearly signals Staff level?",
+      "difficulty": 1,
+      "tags": [
+        "staff"
+      ],
+      "ref": "00-strategy/staff-level-signals.md",
+      "options": [
+        "Aligning multiple teams on a direction you defined under ambiguity, with measurable business impact",
+        "Using a new framework",
+        "Working long hours to hit a deadline",
+        "Fixing a bug quickly on your own"
+      ],
+      "answer": 0,
+      "explanation": "Scope, ambiguity, influence without authority, and impact."
+    },
+    {
+      "id": "behavioral-021",
+      "type": "mcq",
+      "question": "Google's L6 loop typically includes which non-coding rounds?",
+      "difficulty": 2,
+      "tags": [
+        "google"
+      ],
+      "ref": "00-strategy/loops-by-company.md",
+      "options": [
+        "A personality test only",
+        "A presentation to the CEO",
+        "System design (often 2), Role-Related Knowledge, and Googleyness & Leadership",
+        "Only a take-home project"
+      ],
+      "answer": 2,
+      "explanation": "Followed by hiring committee and team matching."
+    },
+    {
+      "id": "behavioral-022",
+      "type": "mcq",
+      "question": "Google's standard coding interview environment usually:",
+      "difficulty": 2,
+      "tags": [
+        "google"
+      ],
+      "ref": "00-strategy/loops-by-company.md",
+      "options": [
+        "Allows any AI assistant",
+        "Has a full IDE with debugger",
+        "Doesn't run code and has no autocomplete, so practice writing correct code without executing it",
+        "Is multiple choice"
+      ],
+      "answer": 2,
+      "explanation": "Dry-run by hand. (Verify the current format with your recruiter.)"
+    },
+    {
+      "id": "behavioral-023",
+      "type": "mcq",
+      "question": "Meta's AI-assisted coding round evaluates you mainly on:",
+      "difficulty": 1,
+      "tags": [
+        "meta",
+        "ai-coding"
+      ],
+      "ref": "00-strategy/ai-assisted-coding.md",
+      "options": [
+        "Problem solving, code quality, how you steer and verify the AI, and communication",
+        "Memorized LeetCode solutions",
+        "How fast the AI can solve the problem alone",
+        "Typing speed"
+      ],
+      "answer": 0,
+      "explanation": "Explain the approach before prompting, delegate small pieces, review every line, and test."
+    },
+    {
+      "id": "behavioral-024",
+      "type": "mcq",
+      "question": "Amazon's stated guidance on GenAI tools during interviews (reported 2025):",
+      "difficulty": 1,
+      "tags": [
+        "amazon"
+      ],
+      "ref": "00-strategy/loops-by-company.md",
+      "options": [
+        "There's no policy",
+        "Don't use them unless explicitly permitted; doing so may disqualify you",
+        "They're encouraged in every round",
+        "Only allowed in behavioral rounds"
+      ],
+      "answer": 1,
+      "explanation": "Prepare to code unassisted for Amazon."
+    },
+    {
+      "id": "behavioral-025",
+      "type": "mcq",
+      "question": "In a Meta loop, the behavioral round:",
+      "difficulty": 2,
+      "tags": [
+        "meta"
+      ],
+      "ref": "00-strategy/loops-by-company.md",
+      "options": [
+        "Only matters for managers",
+        "Is unscored",
+        "Is optional",
+        "Can change your level (e.g. E5 → E4) on its own"
+      ],
+      "answer": 3,
+      "explanation": "Bring Staff-scope stories for E6+."
+    },
+    {
+      "id": "behavioral-026",
+      "type": "card",
+      "question": "What are the 5 parts of STAR-L, with time shares?",
+      "difficulty": 1,
+      "tags": [
+        "star"
+      ],
+      "ref": "06-behavioral/story-framework.md",
+      "answer": "Situation (10%) → Task (10%) → Actions (50%, 'I' not 'we') → Result (20%, with numbers) → Learning (10%)."
+    },
+    {
+      "id": "behavioral-027",
+      "type": "card",
+      "question": "What must a good failure story include?",
+      "difficulty": 1,
+      "tags": [
+        "star"
+      ],
+      "ref": "06-behavioral/story-framework.md",
+      "answer": "A real failure you owned with real consequences → your part in it → how you limited the damage → the systemic change so it can't recur → what you changed about how you work."
+    },
+    {
+      "id": "behavioral-028",
+      "type": "card",
+      "question": "Five phrases that signal Staff thinking in a design round.",
+      "difficulty": 1,
+      "tags": [
+        "staff"
+      ],
+      "ref": "00-strategy/staff-level-signals.md",
+      "answer": "'What does success look like in 6 months, and what won't we support?' / 'Two viable options; here's the trade-off and what would make me switch.' / 'The riskiest part is X, so I'd de-risk it first.' / 'This needs agreement from teams A and B; here's how.' / 'I'd measure ..., and roll back if ...'"
+    },
+    {
+      "id": "behavioral-029",
+      "type": "card",
+      "question": "Your top differentiator for applied AI design rounds?",
+      "difficulty": 1,
+      "tags": [
+        "staff"
+      ],
+      "ref": "00-strategy/staff-level-signals.md",
+      "answer": "Production depth others lack: evaluation harnesses and release gates, permission-aware retrieval, cost/latency engineering, guardrails, and rollout, backed by real systems you led (an enterprise RAG platform for thousands of users; a ~70K docs/month multi-agent pipeline; teams of 8–20)."
+    },
+    {
+      "id": "behavioral-030",
+      "type": "card",
+      "question": "Workflow for the AI-assisted coding round?",
+      "difficulty": 1,
+      "tags": [
+        "ai-coding"
+      ],
+      "ref": "00-strategy/ai-assisted-coding.md",
+      "answer": "Clarify with the interviewer → design and complexity out loud → delegate small, specific pieces to the AI → review every line and explain it → write/ask for tests, run, fix → revisit the design when a new requirement arrives."
+    },
+    {
+      "id": "behavioral-031",
+      "type": "card",
+      "question": "Netflix culture: name 3 ideas you should be ready to discuss.",
+      "difficulty": 2,
+      "tags": [
+        "netflix"
+      ],
+      "ref": "00-strategy/loops-by-company.md",
+      "answer": "Freedom and responsibility; candid feedback; the 'keeper test' (would your manager fight to keep you?); context, not control; highly aligned, loosely coupled teams."
+    }
+  ]
+}

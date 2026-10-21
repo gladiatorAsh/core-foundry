@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install numpy (for the attention test)
+        run: pip install numpy
+      - name: Validate question bank
+        run: python tools/validate.py
+      - name: Run tests
+        run: python -m unittest discover tests -v
+      - name: Check quiz.html and problem list are up to date
+        run: |
+          python tools/build_web_quiz.py
+          python tools/problems.py
+          git diff --exit-code -- quiz.html 01-coding/problem-list.md \
+            || (echo "Run tools/build_web_quiz.py and tools/problems.py, then commit." && exit 1)

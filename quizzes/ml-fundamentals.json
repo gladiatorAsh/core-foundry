@@ -1,0 +1,486 @@
+{
+  "topic": "ml-fundamentals",
+  "title": "ML & deep learning fundamentals",
+  "questions": [
+    {
+      "id": "ml-fundamentals-001",
+      "type": "mcq",
+      "question": "Training error is low, validation error is high. Diagnosis and first fixes?",
+      "difficulty": 1,
+      "tags": [
+        "bias-variance"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "Learning rate too low",
+        "High variance (overfitting): more data, regularization, simpler model, early stopping",
+        "High bias: add features and a bigger model",
+        "Data leakage: nothing to fix"
+      ],
+      "answer": 1,
+      "explanation": "The gap between train and validation is the variance signal."
+    },
+    {
+      "id": "ml-fundamentals-002",
+      "type": "mcq",
+      "question": "Which regularizer tends to produce sparse weights (exact zeros)?",
+      "difficulty": 1,
+      "tags": [
+        "regularization"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "Dropout",
+        "L2 (ridge)",
+        "Batch normalization",
+        "L1 (lasso)"
+      ],
+      "answer": 3,
+      "explanation": "The L1 penalty's corner geometry drives weights to zero, so it doubles as feature selection."
+    },
+    {
+      "id": "ml-fundamentals-003",
+      "type": "mcq",
+      "question": "L2 regularization corresponds to which prior in a MAP view?",
+      "difficulty": 2,
+      "tags": [
+        "regularization"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "Laplace prior",
+        "Gaussian prior on the weights",
+        "Uniform prior",
+        "Beta prior"
+      ],
+      "answer": 1,
+      "explanation": "L1 ↔ Laplace prior."
+    },
+    {
+      "id": "ml-fundamentals-004",
+      "type": "mcq",
+      "question": "Bagging (random forest) primarily reduces ___; boosting primarily reduces ___.",
+      "difficulty": 2,
+      "tags": [
+        "ensembles"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "variance; variance",
+        "bias; variance",
+        "bias; bias",
+        "variance; bias"
+      ],
+      "answer": 3,
+      "explanation": "Averaging deep, decorrelated trees cuts variance; sequentially fitting residuals with shallow trees cuts bias."
+    },
+    {
+      "id": "ml-fundamentals-005",
+      "type": "mcq",
+      "question": "In gradient boosting, each new tree is fit to:",
+      "difficulty": 2,
+      "tags": [
+        "ensembles"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "Random labels",
+        "The negative gradient of the loss w.r.t. current predictions (residuals for MSE)",
+        "The features with the highest variance",
+        "A bootstrap sample of the original labels"
+      ],
+      "answer": 1,
+      "explanation": "That's why it's 'gradient' boosting: functional gradient descent."
+    },
+    {
+      "id": "ml-fundamentals-006",
+      "type": "mcq",
+      "question": "Which feature importance method is consistent and gives per-prediction explanations?",
+      "difficulty": 2,
+      "tags": [
+        "interpretability"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "Number of splits",
+        "Correlation with the target",
+        "SHAP values",
+        "Gain-based importance"
+      ],
+      "answer": 2,
+      "explanation": "Gain-based importance is biased toward high-cardinality features; permutation importance is global only."
+    },
+    {
+      "id": "ml-fundamentals-007",
+      "type": "mcq",
+      "question": "Target encoding a high-cardinality categorical feature risks:",
+      "difficulty": 2,
+      "tags": [
+        "features"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "Vanishing gradients",
+        "Label leakage, unless computed out-of-fold with smoothing",
+        "Too many columns",
+        "Nothing"
+      ],
+      "answer": 1,
+      "explanation": "Each row's own label leaks into its feature; use K-fold encoding and smoothing toward the prior."
+    },
+    {
+      "id": "ml-fundamentals-008",
+      "type": "mcq",
+      "question": "Which model does NOT need feature scaling?",
+      "difficulty": 1,
+      "tags": [
+        "features"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "Logistic regression with L2 regularization",
+        "k-NN",
+        "SVM with RBF kernel",
+        "Decision trees / gradient-boosted trees"
+      ],
+      "answer": 3,
+      "explanation": "Trees split on thresholds, so scale doesn't matter; distance- and penalty-based models care."
+    },
+    {
+      "id": "ml-fundamentals-009",
+      "type": "mcq",
+      "question": "k-means assumes clusters are roughly:",
+      "difficulty": 2,
+      "tags": [
+        "unsupervised"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "Arbitrarily shaped",
+        "Defined by density",
+        "Spherical and similar in size (it minimizes squared Euclidean distance)",
+        "Hierarchical"
+      ],
+      "answer": 2,
+      "explanation": "Use DBSCAN or Gaussian mixtures for other shapes; k-means++ for initialization."
+    },
+    {
+      "id": "ml-fundamentals-010",
+      "type": "mcq",
+      "question": "PCA finds:",
+      "difficulty": 1,
+      "tags": [
+        "unsupervised"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "Clusters in the data",
+        "Features most correlated with the label",
+        "Orthogonal directions of maximum variance (top eigenvectors of the covariance matrix)",
+        "Non-linear manifolds"
+      ],
+      "answer": 2,
+      "explanation": "Unsupervised, linear; computed via SVD of centered data."
+    },
+    {
+      "id": "ml-fundamentals-011",
+      "type": "mcq",
+      "question": "Cross-validation for data where the same user appears in many rows should use:",
+      "difficulty": 2,
+      "tags": [
+        "validation"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "No validation",
+        "Leave-one-out",
+        "Grouped k-fold (all of a user's rows in the same fold)",
+        "Plain random k-fold"
+      ],
+      "answer": 2,
+      "explanation": "Otherwise the model memorizes users and validation is optimistic."
+    },
+    {
+      "id": "ml-fundamentals-012",
+      "type": "mcq",
+      "question": "Logistic regression coefficient w for feature x means:",
+      "difficulty": 2,
+      "tags": [
+        "linear-models"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "x causes the outcome",
+        "A one-unit increase in x multiplies the odds by e^w",
+        "A one-unit increase in x increases probability by w",
+        "x's importance rank"
+      ],
+      "answer": 1,
+      "explanation": "Coefficients are in log-odds space."
+    },
+    {
+      "id": "ml-fundamentals-013",
+      "type": "mcq",
+      "question": "Which loss is most robust to outliers in regression?",
+      "difficulty": 1,
+      "tags": [
+        "losses"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "options": [
+        "MSE",
+        "Hinge loss",
+        "Log loss",
+        "MAE (or Huber)"
+      ],
+      "answer": 3,
+      "explanation": "MSE squares errors, so outliers dominate; Huber is quadratic near 0 and linear in the tails."
+    },
+    {
+      "id": "ml-fundamentals-014",
+      "type": "mcq",
+      "question": "Residual (skip) connections mainly help by:",
+      "difficulty": 1,
+      "tags": [
+        "deep-learning"
+      ],
+      "ref": "05-ml-fundamentals/deep-learning.md",
+      "options": [
+        "Acting as dropout",
+        "Normalizing activations",
+        "Letting gradients flow directly through many layers, which eases optimization of deep networks",
+        "Reducing the number of parameters"
+      ],
+      "answer": 2,
+      "explanation": "y = x + F(x): the identity path keeps gradients from vanishing."
+    },
+    {
+      "id": "ml-fundamentals-015",
+      "type": "mcq",
+      "question": "AdamW differs from Adam with L2 by:",
+      "difficulty": 2,
+      "tags": [
+        "optimization"
+      ],
+      "ref": "05-ml-fundamentals/deep-learning.md",
+      "options": [
+        "Removing bias correction",
+        "Decoupling weight decay from the adaptive gradient update",
+        "Using SGD after warmup",
+        "Using no momentum"
+      ],
+      "answer": 1,
+      "explanation": "With Adam, L2 in the loss gets scaled by adaptive rates; decoupled decay behaves like true weight decay."
+    },
+    {
+      "id": "ml-fundamentals-016",
+      "type": "mcq",
+      "question": "Why use LR warmup when training transformers?",
+      "difficulty": 2,
+      "tags": [
+        "optimization"
+      ],
+      "ref": "05-ml-fundamentals/deep-learning.md",
+      "options": [
+        "Early Adam updates with poorly estimated second moments can be unstable; warmup ramps the LR up safely",
+        "To save memory",
+        "To initialize embeddings",
+        "To shuffle data"
+      ],
+      "answer": 0,
+      "explanation": "Typically followed by cosine or linear decay."
+    },
+    {
+      "id": "ml-fundamentals-017",
+      "type": "mcq",
+      "question": "Why do transformers use LayerNorm/RMSNorm rather than BatchNorm?",
+      "difficulty": 2,
+      "tags": [
+        "deep-learning"
+      ],
+      "ref": "05-ml-fundamentals/deep-learning.md",
+      "options": [
+        "LayerNorm adds more parameters",
+        "BatchNorm only works for regression",
+        "Normalization is per example, so it's independent of batch size and sequence padding, and identical in train and inference",
+        "BatchNorm can't be implemented on GPUs"
+      ],
+      "answer": 2,
+      "explanation": "BatchNorm statistics are noisy for small/variable batches and sequences."
+    },
+    {
+      "id": "ml-fundamentals-018",
+      "type": "mcq",
+      "question": "A bi-encoder vs a cross-encoder for search:",
+      "difficulty": 1,
+      "tags": [
+        "embeddings"
+      ],
+      "ref": "05-ml-fundamentals/deep-learning.md",
+      "options": [
+        "Bi-encoders embed query and docs separately (precomputable, fast); cross-encoders score pairs jointly (accurate, slow)",
+        "They're identical",
+        "Bi-encoders can't be used for retrieval",
+        "Cross-encoders are faster"
+      ],
+      "answer": 0,
+      "explanation": "Use bi-encoders to retrieve and cross-encoders to re-rank."
+    },
+    {
+      "id": "ml-fundamentals-019",
+      "type": "mcq",
+      "question": "In contrastive learning with in-batch negatives, increasing batch size typically:",
+      "difficulty": 2,
+      "tags": [
+        "embeddings"
+      ],
+      "ref": "05-ml-fundamentals/deep-learning.md",
+      "options": [
+        "Removes the need for positives",
+        "Makes the loss non-differentiable",
+        "Improves embeddings by providing more negatives per positive",
+        "Has no effect"
+      ],
+      "answer": 2,
+      "explanation": "Hard negatives help further."
+    },
+    {
+      "id": "ml-fundamentals-020",
+      "type": "mcq",
+      "question": "Your network's loss is NaN after a few steps. First things to check?",
+      "difficulty": 1,
+      "tags": [
+        "debugging"
+      ],
+      "ref": "05-ml-fundamentals/deep-learning.md",
+      "options": [
+        "Remove the validation set",
+        "Increase the batch size to 10×",
+        "Add more layers",
+        "Learning rate too high, log(0) or division by zero, fp16 overflow; try gradient clipping"
+      ],
+      "answer": 3,
+      "explanation": "Also check inputs for NaN/inf and verify the data pipeline."
+    },
+    {
+      "id": "ml-fundamentals-021",
+      "type": "mcq",
+      "question": "Approximate memory to train a model with Adam in mixed precision, per parameter (excluding activations)?",
+      "difficulty": 3,
+      "tags": [
+        "training-at-scale"
+      ],
+      "ref": "05-ml-fundamentals/deep-learning.md",
+      "options": [
+        "~16–20 bytes",
+        "~100 bytes",
+        "~2 bytes",
+        "~4 bytes"
+      ],
+      "answer": 0,
+      "explanation": "fp16/bf16 weights (2) + gradients (2) + fp32 master weights (4) + Adam moments (4 + 4) = 16, plus overhead."
+    },
+    {
+      "id": "ml-fundamentals-022",
+      "type": "mcq",
+      "question": "FSDP / ZeRO stage 3 shards:",
+      "difficulty": 3,
+      "tags": [
+        "training-at-scale"
+      ],
+      "ref": "05-ml-fundamentals/deep-learning.md",
+      "options": [
+        "Parameters, gradients, and optimizer states across data-parallel workers",
+        "Only activations",
+        "Only the dataset",
+        "Only the learning rate schedule"
+      ],
+      "answer": 0,
+      "explanation": "Reduces per-GPU memory so larger models fit, at the cost of extra communication."
+    },
+    {
+      "id": "ml-fundamentals-023",
+      "type": "mcq",
+      "question": "Mixture-of-Experts models:",
+      "difficulty": 2,
+      "tags": [
+        "architectures"
+      ],
+      "ref": "05-ml-fundamentals/deep-learning.md",
+      "options": [
+        "Route each token to a few expert MLPs, increasing total parameters without proportionally increasing compute per token",
+        "Average the predictions of many separately trained models",
+        "Use one expert per layer always",
+        "Require no routing"
+      ],
+      "answer": 0,
+      "explanation": "Challenges: load balancing, memory (all experts resident), communication."
+    },
+    {
+      "id": "ml-fundamentals-024",
+      "type": "card",
+      "question": "Explain the bias–variance decomposition in one breath.",
+      "difficulty": 1,
+      "tags": [
+        "bias-variance"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "answer": "Expected test error = bias² (error from wrong assumptions) + variance (sensitivity to the training sample) + irreducible noise. Simple models: high bias. Complex models: high variance. Regularization, more data, and ensembling move you along the trade-off."
+    },
+    {
+      "id": "ml-fundamentals-025",
+      "type": "card",
+      "question": "How do you handle class imbalance?",
+      "difficulty": 1,
+      "tags": [
+        "imbalance"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "answer": "Use the right metric (PR-AUC, recall at precision); class weights or focal loss; resample (down-sample negatives, then recalibrate); tune the decision threshold for the business cost; collect more positives. SMOTE rarely helps in production."
+    },
+    {
+      "id": "ml-fundamentals-026",
+      "type": "card",
+      "question": "What is data leakage? Give two examples.",
+      "difficulty": 1,
+      "tags": [
+        "data"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "answer": "Information unavailable at prediction time leaking into training. Examples: a feature computed after the label event (e.g. 'account closed date' for churn); random splits for time series; target encoding without out-of-fold; normalizing with statistics from the full dataset including test."
+    },
+    {
+      "id": "ml-fundamentals-027",
+      "type": "card",
+      "question": "Platt scaling vs isotonic regression?",
+      "difficulty": 2,
+      "tags": [
+        "calibration"
+      ],
+      "ref": "05-ml-fundamentals/classical-ml.md",
+      "answer": "Both calibrate scores into probabilities on a held-out set. Platt fits a logistic curve (2 params; good with little data, assumes sigmoid shape). Isotonic fits a monotonic step function (flexible; needs more data; can overfit)."
+    },
+    {
+      "id": "ml-fundamentals-028",
+      "type": "card",
+      "question": "Steps to debug a deep model that won't learn.",
+      "difficulty": 1,
+      "tags": [
+        "debugging"
+      ],
+      "ref": "05-ml-fundamentals/deep-learning.md",
+      "answer": "Overfit one small batch; verify data/labels and preprocessing parity; LR range test; check for NaNs; monitor per-layer gradient norms and activations; check initialization; compare against a simple baseline."
+    },
+    {
+      "id": "ml-fundamentals-029",
+      "type": "card",
+      "question": "Data, tensor, and pipeline parallelism: one line each.",
+      "difficulty": 2,
+      "tags": [
+        "training-at-scale"
+      ],
+      "ref": "05-ml-fundamentals/deep-learning.md",
+      "answer": "Data: replicate the model, split the batch, all-reduce gradients. Tensor: split individual weight matrices across GPUs within a layer. Pipeline: split layers across GPUs and stream micro-batches through stages."
+    }
+  ]
+}

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Core Foundry Quiz</title>
+<style>
+:root {
+  --bg: #f6f7fb; --surface: #ffffff; --ink: #121826; --muted: #5b6577; --line: #e3e7ef;
+  --accent: #2557d6; --accent-ink: #ffffff; --good: #16794a; --bad: #b42318; --good-bg: #e7f6ee; --bad-bg: #fdecea;
+  --chip: #eef2fb;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117; --surface: #161b24; --ink: #e8ecf3; --muted: #9aa4b5; --line: #273041;
+    --accent: #6b9bff; --accent-ink: #0d1117; --good: #4cc38a; --bad: #ff7b72; --good-bg: #12291e; --bad-bg: #2d1515;
+    --chip: #1e2533;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { font-size: 1.4rem; margin: 0 0 4px; }
+.sub { color: var(--muted); margin: 0 0 20px; font-size: .95rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+.label { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 1px solid var(--line); background: var(--chip); color: var(--ink); border-radius: 999px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: .9rem; }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 14px; }
+select, button.primary, button.secondary { font: inherit; border-radius: 10px; padding: 9px 14px; }
+select { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+button.primary { background: var(--accent); color: var(--accent-ink); border: 0; cursor: pointer; font-weight: 600; }
+button.secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); cursor: pointer; }
+button:focus-visible, .opt:focus-visible, .chip:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.meta { color: var(--muted); font-size: .85rem; margin-bottom: 8px; }
+.q { font-size: 1.12rem; font-weight: 600; margin: 0 0 14px; }
+.opt { display: block; width: 100%; text-align: left; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin: 8px 0; cursor: pointer; font: inherit; }
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt .k { display: inline-block; width: 1.6em; font-weight: 700; color: var(--muted); }
+.opt.right { background: var(--good-bg); border-color: var(--good); }
+.opt.wrong { background: var(--bad-bg); border-color: var(--bad); }
+.feedback { margin-top: 12px; padding: 12px 14px; border-radius: 10px; background: var(--chip); }
+.feedback strong.good { color: var(--good); } .feedback strong.bad { color: var(--bad); }
+.answer { white-space: pre-wrap; }
+.ref { color: var(--muted); font-size: .85rem; margin-top: 8px; word-break: break-word; }
+.progress { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin-bottom: 14px; }
+.progress > div { height: 100%; background: var(--accent); width: 0; transition: width .2s; }
+table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--line); }
+th:not(:first-child), td:not(:first-child) { text-align: right; }
+.hint { color: var(--muted); font-size: .82rem; margin-top: 10px; }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Interview prep quiz</h1>
+  <p class="sub">__TOTAL__ questions · spaced repetition saved in this browser</p>
+
+  <section id="setup" class="card">
+    <p class="label">Topics</p>
+    <div class="chips" id="topics"></div>
+    <div class="row">
+      <label>Questions <select id="count"><option>10</option><option selected>15</option><option>25</option><option>40</option></select></label>
+      <label>Mode <select id="mode"><option value="mixed">Mixed</option><option value="mcq">Multiple choice</option><option value="cards">Flashcards</option></select></label>
+      <label><input type="checkbox" id="dueOnly"> Only due + new</label>
+    </div>
+    <div class="row">
+      <button class="primary" id="start">Start</button>
+      <button class="secondary" id="showStats">Progress</button>
+    </div>
+    <p class="hint">Keys: A–D or 1–4 to answer · Space/Enter to reveal or continue · in flashcards: 1 again, 2 hard, 3 good.</p>
+  </section>
+
+  <section id="quiz" class="card hidden" aria-live="polite">
+    <div class="progress"><div id="bar"></div></div>
+    <div class="meta" id="meta"></div>
+    <p class="q" id="question"></p>
+    <div id="body"></div>
+  </section>
+
+  <section id="stats" class="card hidden"></section>
+</main>
+<script>
+const BANK = __BANK__;
+const INTERVAL_DAYS = [0, 1, 3, 7, 16, 35];
+const DAY = 86400000;
+const KEY = "core-foundry-progress-v1";
+
+function loadProgress() { try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { return {}; } }
+function saveProgress(p) { try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) { /* storage unavailable: session only */ } }
+let progress = loadProgress();
+
+const isDue = (rec, now) => !rec || now >= (rec.last || 0) + INTERVAL_DAYS[rec.box || 0] * DAY;
+function record(id, quality) {
+  const rec = progress[id] || (progress[id] = { box: 0, seen: 0, correct: 0 });
+  rec.seen++; rec.last = Date.now();
+  if (quality === 2) { rec.correct++; rec.box = Math.min(rec.box + 1, INTERVAL_DAYS.length - 1); }
+  else if (quality === 0) rec.box = 0;
+  saveProgress(progress);
+}
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+
+// Topic chips
+const selected = new Set(Object.keys(BANK));
+for (const [topic, doc] of Object.entries(BANK)) {
+  const b = document.createElement("button");
+  b.className = "chip"; b.type = "button"; b.setAttribute("aria-pressed", "true");
+  b.textContent = `${doc.title} (${doc.questions.length})`;
+  b.onclick = () => { selected.has(topic) ? selected.delete(topic) : selected.add(topic); b.setAttribute("aria-pressed", selected.has(topic)); };
+  $("topics").appendChild(b);
+}
+
+let session = [], idx = 0, results = [], awaiting = null;
+
+function pick() {
+  const now = Date.now(), mode = $("mode").value, n = +$("count").value;
+  const pool = [];
+  for (const t of selected) for (const q of BANK[t].questions) {
+    if (mode === "mcq" && q.type !== "mcq") continue;
+    if (mode === "cards" && q.type !== "card") continue;
+    pool.push(q);
+  }
+  const due = shuffle(pool.filter(q => progress[q.id] && isDue(progress[q.id], now)));
+  const fresh = shuffle(pool.filter(q => !progress[q.id]));
+  const rest = shuffle(pool.filter(q => progress[q.id] && !isDue(progress[q.id], now)));
+  return shuffle([...due, ...fresh, ...($("dueOnly").checked ? [] : rest)].slice(0, n));
+}
+
+function start() {
+  if (!selected.size) { alert("Pick at least one topic."); return; }
+  session = pick(); idx = 0; results = [];
+  if (!session.length) { $("stats").classList.remove("hidden"); $("stats").innerHTML = "<p>Nothing due right now. Untick “Only due + new” to keep practicing.</p>"; return; }
+  $("setup").classList.add("hidden"); $("stats").classList.add("hidden"); $("quiz").classList.remove("hidden");
+  show();
+}
+
+function show() {
+  const q = session[idx];
+  $("bar").style.width = `${(idx / session.length) * 100}%`;
+  $("meta").textContent = `${idx + 1} / ${session.length} · ${BANK[q.id.replace(/-\d+$/, "")]?.title || ""} · ${q.tags.join(", ")}`;
+  $("question").textContent = q.question;
+  const body = $("body"); body.innerHTML = "";
+  if (q.type === "mcq") {
+    q.options.forEach((opt, k) => {
+      const b = document.createElement("button");
+      b.className = "opt"; b.type = "button";
+      b.innerHTML = `<span class="k">${"ABCDEF"[k]}</span>${esc(opt)}`;
+      b.onclick = () => answerMcq(k);
+      body.appendChild(b);
+    });
+    awaiting = "mcq";
+  } else {
+    const b = document.createElement("button");
+    b.className = "primary"; b.type = "button"; b.textContent = "Reveal answer";
+    b.onclick = reveal; body.appendChild(b);
+    awaiting = "reveal";
+  }
+}
+
+function answerMcq(k) {
+  if (awaiting !== "mcq") return;
+  const q = session[idx], right = k === q.answer;
+  [...document.querySelectorAll(".opt")].forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.answer) b.classList.add("right"); else if (i === k) b.classList.add("wrong");
+  });
+  record(q.id, right ? 2 : 0); results.push(right ? 2 : 0);
+  const fb = document.createElement("div"); fb.className = "feedback";
+  fb.innerHTML = `<strong class="${right ? "good" : "bad"}">${right ? "Correct." : "Not quite."}</strong> ${esc(q.explanation)}<div class="ref">Read more: ${esc(q.ref)}</div>`;
+  $("body").appendChild(fb); addNext();
+}
+
+function reveal() {
+  const q = session[idx];
+  $("body").innerHTML = `<div class="feedback answer">${esc(q.answer)}<div class="ref">Read more: ${esc(q.ref)}</div></div>`;
+  const row = document.createElement("div"); row.className = "row";
+  [["Again", 0], ["Hard", 1], ["Good", 2]].forEach(([label, quality]) => {
+    const b = document.createElement("button"); b.type = "button";
+    b.className = quality === 2 ? "primary" : "secondary"; b.textContent = label;
+    b.onclick = () => grade(quality); row.appendChild(b);
+  });
+  $("body").appendChild(row); awaiting = "grade";
+}
+
+function grade(quality) {
+  if (awaiting !== "grade") return;
+  record(session[idx].id, quality); results.push(quality); next();
+}
+
+function addNext() {
+  const b = document.createElement("button"); b.className = "primary"; b.type = "button";
+  b.textContent = idx + 1 < session.length ? "Next" : "Finish"; b.style.marginTop = "12px";
+  b.onclick = next; $("body").appendChild(b); b.focus(); awaiting = "next";
+}
+
+function next() {
+  idx++;
+  if (idx < session.length) { show(); return; }
+  awaiting = null;
+  const good = results.filter(r => r === 2).length;
+  $("quiz").classList.add("hidden"); $("setup").classList.remove("hidden");
+  renderStats(`<p><strong>Score: ${good}/${results.length}</strong> (${Math.round(100 * good / Math.max(results.length, 1))}%)</p>`);
+}
+
+function renderStats(prefix = "") {
+  const now = Date.now();
+  let rows = "";
+  for (const [t, doc] of Object.entries(BANK)) {
+    const seen = doc.questions.filter(q => progress[q.id]);
+    const mastered = seen.filter(q => progress[q.id].box >= 3).length;
+    const due = seen.filter(q => isDue(progress[q.id], now)).length;
+    rows += `<tr><td>${esc(doc.title)}</td><td>${doc.questions.length}</td><td>${seen.length}</td><td>${mastered}</td><td>${due}</td></tr>`;
+  }
+  $("stats").innerHTML = `${prefix}<p class="label">Progress</p><table><tr><th>Topic</th><th>Total</th><th>Seen</th><th>Mastered</th><th>Due</th></tr>${rows}</table>
+    <p class="hint">Mastered = correct on 3 spaced reviews. Progress is stored only in this browser.</p>
+    <button class="secondary" id="reset">Reset progress</button>`;
+  $("stats").classList.remove("hidden");
+  $("reset").onclick = () => { if (confirm("Delete all saved progress in this browser?")) { progress = {}; saveProgress(progress); renderStats(); } };
+}
+
+$("start").onclick = start;
+$("showStats").onclick = () => renderStats();
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "SELECT" || e.metaKey || e.ctrlKey) return;
+  const key = e.key.toUpperCase();
+  if (awaiting === "mcq") {
+    const k = "ABCDEF".indexOf(key) >= 0 ? "ABCDEF".indexOf(key) : "123456".indexOf(key);
+    if (k >= 0 && k < session[idx].options.length) { e.preventDefault(); answerMcq(k); }
+  } else if (awaiting === "reveal" && (key === " " || key === "ENTER")) { e.preventDefault(); reveal(); }
+  else if (awaiting === "grade" && "123".includes(key)) { e.preventDefault(); grade(+key - 1); }
+  else if (awaiting === "next" && (key === " " || key === "ENTER")) { e.preventDefault(); next(); }
+});
+</script>
+</body>
+</html>
